@@ -65,5 +65,7 @@ print(confusion_matrix(y_actual, y_predict))
 print("----------------- confusion report ----------------------")
 print(classification_report(y_actual, y_predict))
 
+# summary 
+print(s1_model.summary())
 
 

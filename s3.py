@@ -33,7 +33,6 @@ print(y_actual)
 
 print("----------------- y_predict ----------------------")
 y_predict = s3_model.predict(ak_x_test)
-# y_predict = y_predict.argmax(axis=-1)
 print(y_predict)
 
 # confusion matrix
@@ -49,15 +48,6 @@ print("---------------- results --------------------")
 s3_model_result = s3_model.export_model()
 print(s3_model_result.summary())
 
-# save
-s3_model_result.save('s3_231002.h5')
-
-print("---------------- best params --------------------")
-# s3_best_param = s3_model_result.get_best_hyperparameters(num_trials=1)[0]
-# print("neuron: ", s3_best_param.get("neuron"))
-# print("activation: ", s3_best_param.get("activation"))
-# print("hidden_layers: ", s3_best_param.get("hidden_layers"))
-# print("dropout: ", s3_best_param.get("dropout"))
 
 
 
