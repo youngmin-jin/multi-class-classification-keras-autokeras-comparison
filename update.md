@@ -1,8 +1,11 @@
 # 121023
 Jin) 
-- The number of <ins>epochs has been changed from 300 to 100</ins> due to consuming time resulting from the expanded grid. This change has been applied to all the models to maintain consistency. The results and codes of 1 models have been uploaded, and the 2 and 3 models' will be updated as soon as the results come out. 
- 
-  *The original result and best hyperparameters (in the dissertation)<br/>
+- The number of <ins>epochs has been changed from 300 to 100</ins> due to consuming time resulting from the expanded grid. This change has been applied to all the models to maintain consistency. The results and codes of 1 models have been uploaded, and the 2 and 3 models' will be updated as soon as the results come out.
+- <ins>The i2 without data augmentation worked fine</ins> in the test running. I am planning to apply data augmentation to the i3 after getting the results of 2 models.
+
+<br/>
+
+## The original result and best hyperparameters (in the dissertation)<br/>
   > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/5f88408a-13fc-4942-9130-14bc750f3313) <br/><br/>
 <br/>
 
