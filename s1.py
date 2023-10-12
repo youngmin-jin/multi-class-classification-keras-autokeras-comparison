@@ -44,7 +44,7 @@ s1_model.add(keras.layers.Dense(4, activation='softmax'))
 s1_model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
 # fit
-num_epochs = 300
+num_epochs = 100
 s1_model.fit(ks_x_train, ks_y_train, epochs=num_epochs)
 
 # actual and predicted value

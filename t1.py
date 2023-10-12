@@ -5,6 +5,8 @@ import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import classification_report
+from sklearn.metrics import confusion_matrix
 
 # -------------------------------
 # read and modify data
@@ -42,11 +44,6 @@ vectorize_layer = tf.keras.layers.TextVectorization(
     , output_sequence_length=sequency_length
 )
 
-for text, label in raw_train_ds.take(1):
-  for i in range(4):
-    print(text.numpy()[i])
-    print(label.numpy()[i])
-
 # make a text-only dataset
 text_ds = raw_train_ds.map(lambda x,y: x)
 
@@ -71,21 +68,6 @@ ks_test_ds = ks_test_ds.cache().prefetch(buffer_size=10)
 # a integer input for vocab indices
 inputs = tf.keras.Input(shape=(None,), dtype='int64')
 
-# ------------- legacy --------------------------------------
-# add a layer to map those vocab indices into a space of dimensionality
-# x = keras.layers.Embedding(max_features, embedding_dim)(inputs)
-# x = keras.layers.Dropout(0.5)(x)
-
-# Conv1D + global max pooling
-# x = keras.layers.Conv1D(128, 7, padding='valid', activation='relu', strides=3)(x)
-# x = keras.layers.Conv1D(128, 7, padding='valid', activation='relu', strides=3)(x)
-# x = keras.layers.GlobalMaxPooling1D()(x)
-
-# fadd a vanilla hidden layer
-# x = keras.layers.Dense(128, activation='relu')(x)
-# x = keras.layers.Dropout(0.5)(x)
-# -----------------------------------------------------------
-
 x = layers.Embedding(max_features, embedding_dim)(inputs)
 x = layers.Conv1D(128, 3, strides=2, padding='same', activation='relu')(x)
 x = layers.GlobalMaxPooling1D()(x)
@@ -98,22 +80,44 @@ predictions = layers.Dense(3, activation='softmax', name='predictions')(x)
 t1_model = keras.Model(inputs, predictions)
 
 # compile
-t1_model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy',keras.metrics.Precision(), keras.metrics.Recall()])
+t1_model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
 # fit
-num_epochs = 300
-t1_history = t1_model.fit(ks_train_ds, validation_data=ks_test_ds, epochs = num_epochs)
+num_epochs = 100
+t1_model.fit(ks_train_ds, epochs = num_epochs)
 
 # summary
 print('----------- results ---------------')
 print(t1_model.summary())
 
-# best score
-print('t1 best loss:', max(t1_history.history['loss']))
-print('t1 best val_loss:', max(t1_history.history['val_loss']))
-print('t1 best accuracy:', max(t1_history.history['accuracy']))
-print('t1 best val_accuracy:', max(t1_history.history['val_accuracy']))
-print('t1 best precision:', max(t1_history.history['precision']))
-print('t1 best val_precision:', max(t1_history.history['val_precision']))
-print('t1 best recall:', max(t1_history.history['recall']))
-print('t1 best val_recall:', max(t1_history.history['val_recall']))
+# evaluate on the test dataset
+print('----------- Evaluation on Test Dataset ---------------')
+test_loss, test_accuracy = t1_model.evaluate(ks_test_ds)
+print(f'Test Loss: {test_loss:.4f}')
+print(f'Test Accuracy: {test_accuracy:.4f}')
+
+# predict/ actual and predict values
+y_actual = []
+y_predict = []
+for text, label in ks_test_ds:
+  y_actual.append(label.numpy())
+  y_predict.append(t1_model.predict(text).argmax(axis=-1))
+  
+y_actual = np.concatenate(y_actual, axis=0)
+y_actual = np.argmax(np.array(y_actual), axis=1)
+y_predict = np.concatenate(y_predict, axis=0)
+
+print("----------------- y_actual ----------------------")
+print(y_actual)
+
+print("----------------- y_predict ----------------------")
+print(y_predict)
+
+# confusion matrix
+print("----------------- confusion matrix ----------------------")
+print(confusion_matrix(y_actual, y_predict))
+
+# confusion report
+print("----------------- confusion report ----------------------")
+print(classification_report(y_actual, y_predict))
+
