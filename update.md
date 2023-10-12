@@ -1,45 +1,52 @@
-# 041023
+# 121023
 Jin) 
-- The s1, s2, and s3 codes have been modified and completed so far. (other codes have not been changed since the dissertation submission.) <br/>
-- Even though the s3 model's code has been changed ("max_trials=1", which might have occurred the low performance, was set in the previous s3 model and now deleted), <ins>the results, especially accuracy, are quite the same.</ins> However, <ins>the best "number of hidden layers" hyperparameter value has been changed from 5 to 3</ins> (*total number of dense layers including an input layer). Please refer to the s2 result. <br/><br/>
-  *The existing result and best hyperparameters<br/>
+- The number of <ins>epochs has been changed from 300 to 100</ins> due to consuming time resulting from the expanded grid. This change has been applied to all the models to maintain consistency. The results and codes of 1 models have been uploaded, and the 2 and 3 models' will be updated as soon as the results come out. 
+ 
+  *The original result and best hyperparameters (in the dissertation)<br/>
   > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/5f88408a-13fc-4942-9130-14bc750f3313) <br/><br/>
 <br/>
 
 ## Structured data models
-### s1: Completed
+### s1: <ins>completed</ins>
   - running time
-    > Slurm Job_id=194887 Name=s1.slurm Ended, Run time **00:02:04**
+    > Slurm Job_id=209194 Name=s1.slurm Ended, Run time **00:00:55**
 
   - results
-    > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/83931863-bd44-437d-8417-6159538f9b74) <br/>
+    > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/0ea1b0c2-8c16-41da-9b60-ac38c910970d) <br/>
 
-  - The full result can be confirmed here https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/issues/1#issue-1920581046 <br/><br/>
+  - The full result can be confirmed here [https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/issues/1#issue-1920581046](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/issues/4#issue-1939208249) <br/><br/>
 
+### s2: <ins>running</ins> (kerastuner 1.3.5)
+### s3: <ins>waiting for running</ins> (after finishing the 2 models) due to the conflict of autokeras and kerastuner version
 
-### s2: Completed (kerastuner 1.3.5)
+<br/><br/>
+
+## Text data models
+### t1: <ins>completed</ins>
   - running time
-    > Slurm Job_id=193664 Name=s2.slurm Ended, Run time **06:18:18**
-    
-  - results
-    > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/68dc9680-170c-40e5-b20a-7e65e2f59acb) <br/>
-    > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/64ff103b-50f1-4ef0-a613-245724bfd4aa) <br/>
-
-  - best hyperparameters
-    > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/ea6b92b5-4b98-4c76-960f-b2c460ae94ba) <br/>
-
-   - The full result can be confirmed here https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/issues/2#issue-1925415370 <br/><br/>
-
-
-### s3: Completed (autokeras 1.0.16)
-  - running time
-    > Slurm Job_id=193796 Name=s3.slurm Ended, Run time **01:26:29**
+    >  Slurm Job_id=209201 Name=t1.slurm Ended, Run time **00:01:16**
 
   - results
-    > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/cb4bfe55-9e95-43c6-b11b-a766a1d8b03f) <br/>
+    > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/605d153d-d189-44e1-92d3-e844a509aa7a) <br/>
+    > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/ed7b85e9-faf2-42e6-b87a-bea1382283ee) <br/>
 
-  - The full result can be confirmed here https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/issues/3#issue-1925415683 <br/><br/>
+  - The full result can be confirmed here https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/issues/5#issue-1939208665 <br/><br/>
 
+### t2: <ins>running</ins> (kerastuner 1.3.5)
+### t3: <ins>waiting for running</ins> (after finishing the 2 models) due to the conflict of autokeras and kerastuner version
 
+<br/><br/>
 
+## Image data models
+### i1: <ins>completed</ins>
+  - running time
+    >  Slurm Job_id=209202 Name=i1.slurm Ended, Run time **00:09:00**
 
+  - results
+    > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/60564f5c-98f7-4146-a36f-3bdcae9cf50a) <br/>
+    > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/623c71b0-d184-439c-8908-875c06f1b9ac) <br/>
+
+  - The full result can be confirmed here [https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/issues/5#issue-1939208665](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/issues/6#issue-1939208864) <br/><br/>
+
+### t2: <ins>running</ins> (kerastuner 1.3.5)
+### t3: <ins>waiting for running</ins> (after finishing the 2 models) due to the conflict of autokeras and kerastuner version
