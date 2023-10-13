@@ -4,7 +4,9 @@ import pandas as pd
 import tensorflow as tf
 from tensorflow import keras
 from sklearn.model_selection import train_test_split
-from kerastuner.tuners import RandomSearch
+import keras_tuner
+from sklearn.metrics import classification_report
+from sklearn.metrics import confusion_matrix
 
 # -------------------------------
 # read and modify data
@@ -70,46 +72,75 @@ ks_test_ds = ks_test_ds.cache().prefetch(buffer_size=10)
 # -------------------------------
 def t2_create_model(hp):
   inputs = tf.keras.Input(shape=(None,), dtype='int64')
-  # ---------------------- legacy ---------------------------------------------
-  # add a layer to map those vocab indices into a space of dimensionality
-  # x = keras.layers.Embedding(max_features, embedding_dim)(inputs)
-  # x = keras.layers.Dropout(hp.Choice('dropout', values=[0.0,0.2,0.5]))(x)
-  
-  # Conv1D + global max pooling
-  # x = keras.layers.Conv1D(hp.Choice('neurons', values=[100,500,1000]), 7, padding='valid', activation=hp.Choice('activation', values=['relu','sigmoid','tanh']), strides=3)(x)
-  # x = keras.layers.GlobalMaxPooling1D()(x)
-  # x = keras.layers.Dense(hp.Choice('neurons', values=[100,500,1000]), activation=hp.Choice('activation', values=['relu','sigmoid','tanh']))(x)
-  # x = keras.layers.Dropout(hp.Choice('dropout', values=[0.0,0.2,0.5]))(x)
-  # ---------------------------------------------------------------------------
   
   x = keras.layers.Embedding(max_features, embedding_dim)(inputs) 
   for i in range(hp.Int('hidden_layers', 1, 3)):
-    x = keras.layers.Conv1D(hp.Choice('neuron', values=[100,500,1000])
+    x = keras.layers.Conv1D(hp.Choice('neuron', values=[100,500,1000,1500,2000])
     , 3, strides=2, padding='same'
     , activation=hp.Choice('activation', values=['relu','sigmoid','tanh']))(x)
   x = keras.layers.GlobalMaxPooling1D()(x)
   x = keras.layers.Dropout(hp.Choice('dropout', values=[0.0,0.2,0.5]))(x)
-
   predictions = keras.layers.Dense(3, activation='softmax', name='predictions')(x)
   model = tf.keras.Model(inputs, predictions)
-  model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy',keras.metrics.Precision(), keras.metrics.Recall()])
+  model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
   return model
 
 # randomsearch
-t2_model = RandomSearch(
+t2_model = keras_tuner.GridSearch(
   t2_create_model
-  , objective='val_accuracy'
-  , max_trials=1000
+  , objective='accuracy'
   , overwrite=True
-  , directory='t2_tuner1'
-  , project_name='t2_tuner2'
 )
 
-# fit
-num_epochs = 300
-t2_model.search(ks_train_ds, validation_data=(ks_test_ds), epochs=num_epochs)
+# search
+num_epochs = 100
+t2_model.search(ks_train_ds, epochs=num_epochs)
 
-# summary 
-print("---------------- results --------------------")
-print(t2_model.results_summary())
-print(t2_model.get_best_models()[0])
+# best model results
+print("---------------- best params --------------------")
+t2_best_param = t2_model.get_best_hyperparameters(num_trials=1)[0]
+print("neuron: ", t2_best_param.get("neuron"))
+print("activation: ", t2_best_param.get("activation"))
+print("hidden_layers: ", t2_best_param.get("hidden_layers"))
+print("dropout: ", t2_best_param.get("dropout"))
+
+print("---------------- best model results --------------------")
+t2_best_model = t2_model.get_best_models()[0]
+t2_best_model.build(ks_train_ds)
+print(t2_best_model.summary())
+
+# fit using the best model
+t2_best_model.fit(ks_train_ds)
+
+# evaluate on the test dataset
+print('----------- Evaluation on Test Dataset ---------------')
+test_loss, test_accuracy = t2_best_model.evaluate(ks_test_ds)
+print(f'Test Loss: {test_loss:.4f}')
+print(f'Test Accuracy: {test_accuracy:.4f}')
+
+# predict/ actual and predict values
+y_actual = []
+y_predict = []
+for text, label in ks_test_ds:
+  y_actual.append(label.numpy())
+  y_predict.append(t2_best_model.predict(text).argmax(axis=-1))
+  
+y_actual = np.concatenate(y_actual, axis=0)
+y_actual = np.argmax(np.array(y_actual), axis=1)
+y_predict = np.concatenate(y_predict, axis=0)
+
+print("----------------- y_actual ----------------------")
+print(y_actual)
+
+print("----------------- y_predict ----------------------")
+print(y_predict)
+
+# confusion matrix
+print("----------------- confusion matrix ----------------------")
+print(confusion_matrix(y_actual, y_predict))
+
+# confusion report
+print("----------------- confusion report ----------------------")
+print(classification_report(y_actual, y_predict))
+
+
