@@ -1,7 +1,8 @@
-# 131023
+# 141023
 Jin) 
-- The number of <ins>epochs has been changed from 300 to 100</ins> due to consuming time resulting from the expanded grid. This change has been applied to all the models to maintain consistency. The results and codes of 1 models have been uploaded, and the 2 and 3 models' will be updated as soon as the results come out.
+- The number of <ins>epochs has been changed from 300 to 100</ins> due to consuming time resulting from the expanded grid. This change has been applied to all the models to maintain consistency. The results and codes of the <ins>1 models , s2, and t2 have been uploaded</ins>, and the i2 and 3 models' will be updated as soon as the results come out. (The i2 model is running almost over two days..)
 - The 2 models are running with the expanded grid (neurons=[100,500,1000,1500,2000])
+- According to the results of the s2 and t2, <ins>the expanded grid does not significantly impact on the higher performance</ins> as they showed the similar or lower scores.
 - <ins>The i2 without data augmentation worked fine</ins> in the test running. I am planning to apply data augmentation to the i3 after getting the results of 2 models.
 
 <br/>
@@ -14,10 +15,8 @@ Jin)
 ### s1: <ins>completed</ins>
   - running time
     > Slurm Job_id=209194 Name=s1.slurm Ended, Run time **00:00:55**
-
   - results
     > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/0ea1b0c2-8c16-41da-9b60-ac38c910970d) <br/>
-
   - The full result can be confirmed here [https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/issues/1#issue-1920581046](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/issues/4#issue-1939208249) <br/><br/>
 
 ### s2: <ins>completed</ins> (kerastuner 1.3.5)
@@ -38,14 +37,21 @@ Jin)
 ### t1: <ins>completed</ins>
   - running time
     >  Slurm Job_id=209201 Name=t1.slurm Ended, Run time **00:01:16**
-
   - results
     > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/605d153d-d189-44e1-92d3-e844a509aa7a) <br/>
     > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/ed7b85e9-faf2-42e6-b87a-bea1382283ee) <br/>
-
   - The full result can be confirmed here https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/issues/5#issue-1939208665 <br/><br/>
 
-### t2: <ins>running with the expanded grid</ins> (kerastuner 1.3.5)
+### t2: <ins>completed</ins> (kerastuner 1.3.5)
+  - running time
+    >  Slurm Job_id=216970 Name=t2.slurm Ended, Run time **04:38:05**
+  - results
+    > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/e727f55a-2989-450a-a27d-6684b5c34cff) <br/>
+    > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/82d118fe-ce3e-4f0f-8f96-979e5d47d167) <br/>
+  - best parameter
+    > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/8cc3698b-f4b5-45bb-8679-b02d7c818fc3)
+  - The full result can be confirmed here https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/issues/8#issue-1942777984 <br/><br/>
+
 ### t3: <ins>waiting for running</ins> (after finishing the 2 models) due to the conflict of autokeras and kerastuner version
 
 <br/><br/>
@@ -54,12 +60,10 @@ Jin)
 ### i1: <ins>completed</ins>
   - running time
     >  Slurm Job_id=209202 Name=i1.slurm Ended, Run time **00:09:00**
-
   - results
     > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/60564f5c-98f7-4146-a36f-3bdcae9cf50a) <br/>
     > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/623c71b0-d184-439c-8908-875c06f1b9ac) <br/>
-
   - The full result can be confirmed here [https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/issues/5#issue-1939208665](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/issues/6#issue-1939208864) <br/><br/>
 
-### t2: <ins>running with the expanded grid</ins> (kerastuner 1.3.5)
-### t3: <ins>waiting for running</ins> (after finishing the 2 models) due to the conflict of autokeras and kerastuner version
+### i2: <ins>running with the expanded grid</ins> (kerastuner 1.3.5)
+### i3: <ins>waiting for running</ins> (after finishing the 2 models) due to the conflict of autokeras and kerastuner version
