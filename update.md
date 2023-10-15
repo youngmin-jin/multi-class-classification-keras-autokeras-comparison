@@ -65,7 +65,7 @@ Jin)
     > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/623c71b0-d184-439c-8908-875c06f1b9ac) <br/>
   - The full result can be confirmed here [https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/issues/5#issue-1939208665](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/issues/6#issue-1939208864) <br/><br/>
 
-### i2: <ins>running with the expanded grid</ins> (kerastuner 1.3.5)
+### i2: <ins>completed</ins> (kerastuner 1.3.5)
   - running time
     > Slurm Job_id=209205 Name=i2.slurm Ended, Run time 2- **09:09:00** (I assumed more than 9h, but it appears like this)
   - results
