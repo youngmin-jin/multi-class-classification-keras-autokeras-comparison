@@ -75,7 +75,7 @@ Jin)
     > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/f94e58b6-ddff-4165-b56d-296698219539) <br/>
   - The full result can be confirmed here https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/issues/9#issue-1943605147 <br/><br/>
 
-### i3: <ins>waiting for running</ins> (after finishing the 2 models) due to the conflict of autokeras and kerastuner version
+### i3: <ins>running with data augmentation</ins>
 
 
 
