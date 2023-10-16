@@ -4,6 +4,7 @@ Jin)
 - The 2 models have been run with the expanded grid (neurons=[100,500,1000,1500,2000])
 - According to the results of the 2 models, <ins>the expanded grid does not significantly impact on the better performance</ins> as they showed the similar or lower scores even though the best parameters of number of neurons are higher.
 - <ins>The i2 without data augmentation worked fine</ins> in the test running. I am planning to apply data augmentation to the i3 after getting the results of 2 models.
+- The i3 with data augmentation is running
 
 <br/>
 
