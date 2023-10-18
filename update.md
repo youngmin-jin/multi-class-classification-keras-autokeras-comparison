@@ -1,15 +1,14 @@
 # 181023
 Jin) 
-- The number of epochs has been changed from 300 to 100 due to consuming time resulting from the expanded grid. This change has been applied to all the models to maintain consistency. The results and codes of the 1 and 2 models have been uploaded, and the 3 models' will be updated as soon as the results come out. 
+- The number of epochs has been changed from 300 to 100 due to consuming time resulting from the expanded grid. This change has been applied to all the models to maintain consistency.
 - Regarding 2 models
   - All the 2 models have been run with the expanded grid (neurons=[100,500,1000,1500,2000])
   - The expanded grid does not significantly impact on the better performance as they showed the similar or lower scores even though the best parameters of number of neurons are higher.
 - Regarding 3 models
-  - The result of the s3 model has been uploaded.
-  - The t3 and i3 models (with data augmentation) are running.
-  - <ins>The test running (i3 using another multi-class image dataset) has also shown a biased result</ins> which returned mostly only one class like below. <br/>
-![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/3225e5ee-bc5d-4e15-9e51-6a4c0ea2634d)
-
+  - The result of the s3 and t3 model have been uploaded/ The i3 model (with data augmentation) is running.
+  - **<ins>The t3 result is quite different from the original result, showing the highest performance between all t models.</ins>** The t2 was the most well-performed model of all t models in the original result.
+  - **<ins>The test running (i3 using another multi-class image dataset) has also shown a biased result</ins>** which returned mostly only one class like below. Therefore,  **<ins>I am running another test (i3 using binary-class image dataset) to see if this issue only occurs when using multi-class dataset.</ins>** <br/><br/>
+![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/3225e5ee-bc5d-4e15-9e51-6a4c0ea2634d) 
 
 <br/>
 
@@ -63,7 +62,12 @@ Jin)
     > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/8cc3698b-f4b5-45bb-8679-b02d7c818fc3)
   - The full result can be confirmed here https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/issues/8#issue-1942777984 <br/><br/>
 
-### t3: <ins>running</ins> 
+### t3: <ins>completed</ins> 
+  - running time
+    >  Slurm Job_id=240053 Name=t3.slurm Ended, Run time **01:11:30**
+  - results
+    >  ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/79021042-aeae-4ee2-8c5c-5eaffaac4c16) <br/>
+  - The full result can be confirmed here https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/issues/11#issue-1948967147 <br/><br/>
 
 <br/><br/>
 
