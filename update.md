@@ -67,7 +67,7 @@ Jin)
 
 ### i2: <ins>completed</ins> (kerastuner 1.3.5)
   - running time
-    > Slurm Job_id=209205 Name=i2.slurm Ended, Run time 2- **09:09:00** (I assumed more than 9h, but it appears like this)
+    > Slurm Job_id=209205 Name=i2.slurm Ended, Run time **2- 09:09:00** (I assume it means 2 days and 9h)
   - results
     > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/a7b69e2d-e3a3-4d06-9acd-d49271bc97e1) <br/>
     > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/99a6acd0-eb6b-4dbd-ba71-551bfe76b16e) <br/>
