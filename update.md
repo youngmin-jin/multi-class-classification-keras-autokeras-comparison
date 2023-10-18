@@ -1,8 +1,8 @@
 # 181023
 Jin) 
-- The number of epochs has been changed from 300 to 100 due to consuming time resulting from the expanded grid. This change has been applied to all the models to maintain consistency. The results and codes of the <ins>1 and 2 models have been uploaded</ins>, and the 3 models' will be updated as soon as the results come out. 
+- The number of epochs has been changed from 300 to 100 due to consuming time resulting from the expanded grid. This change has been applied to all the models to maintain consistency. The results and codes of the 1 and 2 models have been uploaded, and the 3 models' will be updated as soon as the results come out. 
 - The 2 models have been run with the expanded grid (neurons=[100,500,1000,1500,2000])
-- According to the results of the 2 models, <ins>the expanded grid does not significantly impact on the better performance</ins> as they showed the similar or lower scores even though the best parameters of number of neurons are higher.
+- According to the results of the 2 models, the expanded grid does not significantly impact on the better performance as they showed the similar or lower scores even though the best parameters of number of neurons are higher.
 - The 3 models are running now/ the i3 is running with data augmentation
 - <ins>The test running (i3 using another multi-class image dataset) has also shown a biased result</ins> which returned mostly only one class like below. <br/>
 ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/3225e5ee-bc5d-4e15-9e51-6a4c0ea2634d)
