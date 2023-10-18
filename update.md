@@ -1,10 +1,9 @@
-# 141023
+# 181023
 Jin) 
 - The number of <ins>epochs has been changed from 300 to 100</ins> due to consuming time resulting from the expanded grid. This change has been applied to all the models to maintain consistency. The results and codes of the <ins>1 and 2 models have been uploaded</ins>, and the 3 models' will be updated as soon as the results come out. 
 - The 2 models have been run with the expanded grid (neurons=[100,500,1000,1500,2000])
 - According to the results of the 2 models, <ins>the expanded grid does not significantly impact on the better performance</ins> as they showed the similar or lower scores even though the best parameters of number of neurons are higher.
-- <ins>The i2 without data augmentation worked fine</ins> in the test running. I am planning to apply data augmentation to the i3 after getting the results of 2 models.
-- The i3 with data augmentation is running
+- The 3 models are running now/ the i3 is running with data augmentation
 
 <br/>
 
