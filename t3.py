@@ -1,10 +1,12 @@
-# libraries 
+# libraries
 import numpy as np
 import pandas as pd
 import tensorflow as tf
 from tensorflow import keras
 from sklearn.model_selection import train_test_split
 import autokeras as ak
+from sklearn.metrics import classification_report
+from sklearn.metrics import confusion_matrix
 
 # -------------------------------
 # read and modify data
@@ -24,21 +26,28 @@ ak_x_test = np.array(ak_x_test)
 ak_y_test = np.array(ak_y_test)
 
 # model
-num_epochs = 300
-t3_model = ak.TextClassifier(overwrite=True, max_trials=1, num_classes=3, metrics=['accuracy', keras.metrics.Precision(), keras.metrics.Recall()])
-t3_history = t3_model.fit(ak_x_train, ak_y_train, validation_data=(ak_x_test, ak_y_test), epochs=num_epochs)
+num_epochs = 100
+t3_model = ak.TextClassifier(overwrite=True, num_classes=3, metrics=['accuracy'])
+t3_model.fit(ak_x_train, ak_y_train, epochs=num_epochs)
+
+# actual and predicted value
+print("----------------- y_actual ----------------------")
+y_actual = ak_y_test
+print(y_actual)
+
+print("----------------- y_predict ----------------------")
+y_predict = t3_model.predict(ak_x_test)
+print(y_predict)
+
+# confusion matrix
+print("----------------- confusion matrix ----------------------")
+print(confusion_matrix(y_actual, y_predict))
+
+# confusion report
+print("----------------- confusion report ----------------------")
+print(classification_report(y_actual, y_predict))
 
 # summary 
 print("---------------- results --------------------")
 t3_model_result = t3_model.export_model()
 print(t3_model_result.summary())
-
-# best score
-print('t3 best loss:', max(t3_history.history['loss']))
-print('t3 best val_loss:', max(t3_history.history['val_loss']))
-print('t3 best accuracy:', max(t3_history.history['accuracy']))
-print('t3 best val_accuracy:', max(t3_history.history['val_accuracy']))
-print('t3 best precision:', max(t3_history.history['precision']))
-print('t3 best val_precision:', max(t3_history.history['val_precision']))
-print('t3 best recall:', max(t3_history.history['recall']))
-print('t3 best val_recall:', max(t3_history.history['val_recall']))
