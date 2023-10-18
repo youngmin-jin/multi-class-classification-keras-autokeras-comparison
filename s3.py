@@ -1,4 +1,4 @@
-# libraries 
+# libraries
 import numpy as np
 import pandas as pd
 import tensorflow as tf
@@ -22,9 +22,9 @@ df = df.rename({'body fat_%':'body_fat_per', 'sit and bend forward_cm':'sit_and_
 ak_x_train, ak_x_test, ak_y_train, ak_y_test = train_test_split(df.drop('class', axis=1), df[['class']], test_size= 0.3)
 
 # model
-num_epochs = 300
+num_epochs = 100
 s3_model = ak.StructuredDataClassifier(num_classes=4, metrics=['accuracy'], overwrite=True)
-s3_model.fit(ak_x_train, ak_y_train, validation_data=(ak_x_test, ak_y_test), epochs=num_epochs)
+s3_model.fit(ak_x_train, ak_y_train, epochs=num_epochs)
 
 # actual and predicted value
 print("----------------- y_actual ----------------------")
@@ -47,11 +47,6 @@ print(classification_report(y_actual, y_predict))
 print("---------------- results --------------------")
 s3_model_result = s3_model.export_model()
 print(s3_model_result.summary())
-
-
-
-
-
 
 
 
