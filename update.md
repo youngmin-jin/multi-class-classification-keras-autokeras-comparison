@@ -1,14 +1,12 @@
-# 181023
+# 221023
 Jin) 
 - The number of epochs has been changed from 300 to 100 due to consuming time resulting from the expanded grid. This change has been applied to all the models to maintain consistency.
 - Regarding 2 models
   - All the 2 models have been run with the expanded grid (neurons=[100,500,1000,1500,2000])
-  - The expanded grid does not significantly impact on the better performance as they showed the similar or lower scores even though the best parameters of number of neurons are higher.
+  - The expanded grid does not significantly impact on the better performance as they showed the similar or lower scores even though the best parameters of number of neurons are higher than the original's.
 - Regarding 3 models
-  - The result of the s3 and t3 model have been uploaded/ The i3 model (with data augmentation) is running.
-  - **<ins>The t3 result is quite different from the original result, showing the highest performance between all t models.</ins>** The t2 was the most well-performed model of all t models in the original result.
-  - **<ins>The test running (i3 using another multi-class image dataset) has also shown a biased result</ins>** which returned mostly only one class like below. Therefore,  **<ins>I am running another test (i3 using binary-class image dataset) to see if this issue only occurs when using multi-class dataset.</ins>** <br/><br/>
-![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/3225e5ee-bc5d-4e15-9e51-6a4c0ea2634d) 
+  - The t3 result is quite different from the original result, showing the highest performance between all t models. The t2 was the most well-performed model of all t models in the original result.
+  - **<ins>The i3 still showed the low performance although data augmentation has been applied.</ins>** Other test trials (such as using binary-class data or increasing the data size) to see whether they also yield low performances when using AutoKeras, have shown the similar low scores as well. I am planning to create a Keras model using the exact same structure of the i3 to do sanity check. If the result is the same, then it might be possible to conclude that AutoKeras cannot yield acceptable results in some image classification cases. 
 
 <br/>
 
@@ -82,7 +80,7 @@ Jin)
 
 ### i2: <ins>completed</ins> (kerastuner 1.3.5)
   - running time
-    > Slurm Job_id=209205 Name=i2.slurm Ended, Run time **2- 09:09:00** (I assume it means 2 days and 9h)
+    > Slurm Job_id=209205 Name=i2.slurm Ended, Run time **2- 09:09:00** (2 days and 9h 9m)
   - results
     > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/a7b69e2d-e3a3-4d06-9acd-d49271bc97e1) <br/>
     > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/99a6acd0-eb6b-4dbd-ba71-551bfe76b16e) <br/>
@@ -90,7 +88,12 @@ Jin)
     > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/f94e58b6-ddff-4165-b56d-296698219539) <br/>
   - The full result can be confirmed here https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/issues/9#issue-1943605147 <br/><br/>
 
-### i3: <ins>running with data augmentation</ins>
+### i3: <ins>completed (with data augmentation)</ins>
+  - running time
+    > Slurm Job_id=252034 Name=i3.slurm Ended, Run time **2-15:32:33** (2 days and 15h 32m)
+  - results
+    > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/4cf220fe-e00e-4b95-a5f6-d85a5b02f4a7) <br/>
+  - The full result can be confirmed here https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/issues/12#issue-1955753500 <br/><br/>
 
 
 
