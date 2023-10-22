@@ -6,7 +6,9 @@ Jin)
   - The expanded grid does not significantly impact on the better performance as they showed the similar or lower scores even though the best parameters of number of neurons are higher than the original's.
 - Regarding 3 models
   - The t3 result is quite different from the original result, showing the highest performance between all t models. The t2 was the most well-performed model of all t models in the original result.
-  - **<ins>The i3 still showed the low performance although data augmentation has been applied.</ins>** Other test trials (such as using binary-class data or increasing the data size) to see whether they also yield low performances when using AutoKeras, have shown the similar low scores as well. I am planning to create a Keras model using the exact same structure of the i3 to do sanity check. If the result is the same, then it might be possible to conclude that AutoKeras cannot yield acceptable results in some image classification cases. 
+  - **<ins>The i3 still showed the low performance although data augmentation has been applied.</ins>** Other test trials (such as using binary-class data or increasing the data size) to see whether they also yield low performances when using AutoKeras, have shown the similar low scores as well. I am planning to create a Keras model using the exact same structure of the i3 to do sanity check. If the result is the same, then it might be possible to conclude that AutoKeras cannot yield acceptable results in some image classification cases. <br/>
+
+    It seems that some custom settings or pre-processing might help improve the performance. In the [Koh's study (2021)](https://www.mdpi.com/2072-4292/13/5/858), they resized images, added some nodes, such as ImageInput and ImageBlock, to a custom AutoKeras image classification model, and achieved over 90% accuracy. Not sure whether they have directly impacted on the high accuracy, but they might have.
 
 <br/>
 
