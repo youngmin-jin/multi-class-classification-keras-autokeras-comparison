@@ -6,64 +6,79 @@ from tensorflow import keras
 import autokeras as ak
 from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
+from sklearn.model_selection import train_test_split
+
+import os
+from PIL import Image
+from tensorflow.keras.preprocessing.image import img_to_array, load_img
 
 # -------------------------------
 # read and modify data
 # -------------------------------
 # generate a dataset
-ak_train_ds = tf.keras.preprocessing.image_dataset_from_directory(
-    'image-weather'
-    , validation_split=0.3
-    , subset='training'
-    , seed=1337
-    , label_mode="categorical"
-)
-ak_test_ds = tf.keras.preprocessing.image_dataset_from_directory(
-    'image-weather'
-    , validation_split=0.3
-    , subset='validation'
-    , seed=1337
-    , label_mode="categorical"
-)
+data_dir = 'Multi-class Weather Dataset'
+image_size = (128, 128)
+images = []
+labels = []
+class_names = os.listdir(data_dir)
+num_classes = len(class_names)
+label_index = {class_name: idx for idx, class_name in enumerate(class_names)}
 
-# data augmentation model
-data_augmentation = keras.Sequential(
-    [tf.keras.layers.experimental.preprocessing.RandomFlip('horizontal')
-      , tf.keras.layers.experimental.preprocessing.RandomRotation(0.1)
-    ]
-)
+for class_name in class_names:
+    class_dir = os.path.join(data_dir, class_name)
 
-# apply data augmentation to the training dataset
-ak_train_ds = ak_train_ds.map(
-    lambda img, label: (data_augmentation(img), label)
-    , num_parallel_calls = tf.data.AUTOTUNE
-)
+    for image_file in os.listdir(class_dir):
+        image_path = os.path.join(class_dir, image_file)
+        image = load_img(image_path)
+        image = image.resize(image_size)
+        image = img_to_array(image)
+        images.append(image)
+        
+        labels.append(label_index[class_name])
+
+images_array = np.stack(images)
+labels_array = np.array(labels)
+
+for i in range(len(images_array)):
+  images_array[i] = np.reshape(images_array[i], image_size + (3,))
+
+print("------ images_array shape -----", images_array.shape)
+print("------ images_array type -----", type(images_array))
+print("------ images_array dtype -----", images_array.dtype)
+
+print("------ labels_array shape -----", labels_array.shape)
+print("------ labels_array type -----", type(labels_array))
+print("------ labels_array dtype -----", labels_array.dtype)
+
+# split
+x_train, x_test, y_train, y_test = train_test_split(images_array, labels_array, test_size=0.3)
+
+print("------ x_train shape dtype -----", x_train.shape, x_train.dtype)
+print("------ y_train shape dtype -----", y_train.shape, y_train.dtype)
+print("------ x_test shape dtype -----", x_test.shape, x_test.dtype)
+print("------ y_test shape dtype -----", y_test.shape, y_test.dtype)
+
 
 # -------------------------------
 # i3
 # -------------------------------
 # model
-print("-------------- model ------------------")
-num_epochs = 100
-i3_model = ak.ImageClassifier(overwrite=True, num_classes=4, metrics=['accuracy'])
-i3_model.fit(ak_train_ds, epochs=num_epochs)
+num_epochs = 5
+i3_model = ak.ImageClassifier(overwrite=True, num_classes=4, max_trials=2, metrics=['accuracy'])
+i3_model.fit(x_train, y_train, epochs=num_epochs)
 
 # evaluate on the test dataset
-print('----------- Evaluation on Test Dataset ---------------')
-test_loss, test_accuracy = i3_model.evaluate(ak_test_ds)
-print(f'Test Loss: {test_loss:.4f}')
-print(f'Test Accuracy: {test_accuracy:.4f}')
+# print('----------- Evaluation on Test Dataset ---------------')
+# test_loss, test_accuracy = i3_model.evaluate(x_test)
+# print(f'Test Loss: {test_loss:.4f}')
+# print(f'Test Accuracy: {test_accuracy:.4f}')
 
 # predict/ actual and predict values
-y_actual = []
-for img, label in ak_test_ds:
-  y_actual.append(label.numpy())  
-y_actual = np.concatenate(y_actual, axis=0)
-y_actual = np.argmax(np.array(y_actual), axis=1)
+y_actual = y_test
 
-y_predict = i3_model.predict(ak_test_ds).argmax(axis=-1)
-y_predict_train = i3_model.predict(ak_train_ds).argmax(axis=-1)
-# y_predict = np.concatenate(y_predict, axis=0)
+y_predict = i3_model.predict(x_test)
+y_predict = y_predict.flatten()
+y_predict = y_predict.astype('int')
 
 print("----------------- y_actual ----------------------")
 print(y_actual)
