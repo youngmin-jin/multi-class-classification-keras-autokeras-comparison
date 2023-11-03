@@ -18,15 +18,14 @@ Jin)
     > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/34607aa9-d5df-4eb1-82e1-dfff86cc821b) <br/>
   - The full result can be confirmed here https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/issues/16#issue-1975549274 <br/><br/>
 
-### s2: <ins>running</ins> (kerastuner 1.3.5)
+### s2: <ins>completed</ins> (kerastuner 1.3.5)
   - running time
-    >  
+    >  Slurm Job_id=403358 Name=s2.slurm Ended, Run time **01:56:55**
   - results
-    >  <br/>
-    >  <br/>
+    > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/af2357fd-e5a0-4cde-af09-156bb8a9dee8) <br/>
   - best parameter
-    > 
-  - The full result can be confirmed here  <br/><br/>
+    > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/f08db9d0-0803-46e7-bb07-f4aac46c4b14)
+  - The full result can be confirmed here https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/issues/19#issue-1976117946 <br/><br/>
 
 ### s3: <ins>completed</ins>
   - running time
