@@ -1,7 +1,7 @@
 # 031123
 Jin) 
-- s1, s3, t1, t3, i1, i3 are completed (the results are uploaded below)
-- s2, t2-a, i2 are running
+- s1, s2, s3, t1, t3, i1, and i3 are completed (the results are uploaded below)
+- t2-a and i2 are running
 - t2-b is planned to be developed using BERT 
 
 <br/>
