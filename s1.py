@@ -8,6 +8,15 @@ from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
 
 # -------------------------------
+# version check
+# -------------------------------
+import tensorflow as tf
+from tensorflow import keras
+
+print('tensorflow', tf.__version__)
+print('keras', keras.__version__)
+
+# -------------------------------
 # read and modify data
 # -------------------------------
 # read the data

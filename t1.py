@@ -9,6 +9,15 @@ from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
 
 # -------------------------------
+# version check
+# -------------------------------
+import tensorflow as tf
+from tensorflow import keras
+
+print('tensorflow', tf.__version__)
+print('keras', keras.__version__)
+
+# -------------------------------
 # read and modify data
 # -------------------------------
 # read the data
@@ -89,12 +98,6 @@ t1_model.fit(ks_train_ds, epochs = num_epochs)
 # summary
 print('----------- results ---------------')
 print(t1_model.summary())
-
-# evaluate on the test dataset
-print('----------- Evaluation on Test Dataset ---------------')
-test_loss, test_accuracy = t1_model.evaluate(ks_test_ds)
-print(f'Test Loss: {test_loss:.4f}')
-print(f'Test Accuracy: {test_accuracy:.4f}')
 
 # predict/ actual and predict values
 y_actual = []
