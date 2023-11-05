@@ -1,7 +1,7 @@
-# 031123
+# 051123
 Jin) 
-- s1, s2, s3, t1, t3, i1, and i3 are completed (the results are uploaded below)
-- t2-a and i2 are running
+- s1, s2, s3, t1, t2-a, t3, i1, and i3 are completed (the results are uploaded below)
+- i2 is running
 - t2-b is planned to be developed using BERT 
 
 <br/>
@@ -45,14 +45,14 @@ Jin)
  <br/>
   - The full result can be confirmed here https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/issues/17#issue-1975549486 <br/><br/>
 
-### t2-a: <ins>running</ins> (kerastuner 1.3.5)
+### t2-a: <ins>completed</ins> (kerastuner 1.3.5)
   - running time
-    >  
+    > Slurm Job_id=403651 Name=t2-a.slurm Ended, Run time **04:00:58**
   - results
-    >  <br/>
+    > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/5afdfd16-4840-4874-9618-3872576d1c40) <br/>
   - best parameter
-    > 
-  - The full result can be confirmed here <br/><br/>
+    > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/1cd8df18-0ee0-4381-b087-2228f3970a91)
+  - The full result can be confirmed here https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/issues/20#issue-1977641140 <br/><br/>
 
 ### t2-b: <ins>will be developed</ins> (kerastuner 1.3.5)
   - running time
