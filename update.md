@@ -62,7 +62,7 @@ Jin)
     > 
   - The full result can be confirmed here <br/><br/>
 
-### t3: <ins>running</ins> 
+### t3: <ins>completed</ins> 
   - running time
     >  Slurm Job_id=371757 Name=t3.slurm Ended, Run time **02:41:49**
   - results
