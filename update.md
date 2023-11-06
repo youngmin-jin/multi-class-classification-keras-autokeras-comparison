@@ -1,7 +1,6 @@
 # 051123
 Jin) 
-- s1, s2, s3, t1, t2-a, t3, i1, and i3 are completed (the results are uploaded below)
-- i2 is running
+- All the models except for t2-b are completed (the results are uploaded below)
 - t2-b is planned to be developed using BERT 
 
 <br/>
@@ -75,19 +74,21 @@ Jin)
 ## Image data models
 ### i1: <ins>completed</ins>
   - running time
-    >  Slurm Job_id=403338 Name=i1.slurm Ended, **Run time 00:02:42**
+    >  Slurm Job_id=403338 Name=i1.slurm Ended, Run time **00:02:42**
   - results
     > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/c1d9c0c3-d90e-4ed8-bd52-db24b88ddf40) <br/>
   - The full result can be confirmed here https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/issues/18#issue-1975549673 <br/><br/>
 
-### i2: <ins>running</ins> (kerastuner 1.3.5)
+### i2: <ins>completed</ins> (kerastuner 1.3.5)
   - running time
-    > 
+    >  Slurm Job_id=472079 Name=i2.slurm Ended, Run time **15:14:35**
   - results
-    > <br/>
+    > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/4c4f08ed-7004-45d2-9b66-91fc60377530) <br/>
+    ... <br/>
+    > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/72f5aca4-da6c-45f4-b83c-9f33c8f529b8)
   - best parameters
-    > <br/>
-  - The full result can be confirmed here <br/><br/>
+    > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/dbbc5ac8-9d14-45e7-83fc-552b0d6fe57a) <br/>
+  - The full result can be confirmed here https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/issues/21#issue-1978368310 <br/><br/>
 
 ### i3: <ins>completed (with data augmentation)</ins>
   - running time
