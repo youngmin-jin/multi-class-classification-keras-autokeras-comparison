@@ -1,8 +1,6 @@
-# 061123
+# 151123
 Jin) 
-- All the models except for t2-b are completed (the results are uploaded below)
-- t2-b is planned to be developed using BERT 
-
+- The code and result of t2-b using BERT (bert_base_en_uncased, hyperparams: learning_rate, dropout) have been uploaded
 <br/>
 
 ## The original result and best hyperparameters (in the dissertation)<br/>
@@ -55,12 +53,13 @@ Jin)
 
 ### t2-b: <ins>will be developed</ins> (kerastuner 1.3.5)
   - running time
-    >  
+    > Slurm Job_id=544709 Name=t2-b.slurm Ended, Run time 1-03:23:30 
   - results
-    >  <br/>
+    > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/6693b5f7-aecc-4fe7-a2c1-d3fea26a827e) <br/>
+    > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/7b962d72-6dd4-4111-af4f-b70ed8792d99)
   - best parameter
-    > 
-  - The full result can be confirmed here <br/><br/>
+    > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/9f07876e-e4fd-454c-a4ab-cc11f7767c67)
+  - The full result can be confirmed here https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/issues/22#issue-1994901507 <br/><br/>
 
 ### t3: <ins>completed</ins> 
   - running time
