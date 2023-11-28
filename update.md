@@ -1,6 +1,6 @@
-# 151123
+# 281123
 Jin) 
-- The code and result of t2-b using BERT (bert_base_en_uncased, hyperparams: learning_rate, dropout) have been uploaded
+- The t2-b model with 'bert_large_en_uncased' is not working -> waiting the reply from the hpc team
 <br/>
 
 ## The original result and best hyperparameters (in the dissertation)<br/>
@@ -51,7 +51,7 @@ Jin)
     > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/1cd8df18-0ee0-4381-b087-2228f3970a91)
   - The full result can be confirmed here https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/issues/20#issue-1977641140 <br/><br/>
 
-### t2-b: <ins>will be developed</ins> (kerastuner 1.3.5)
+### t2-b: <ins>when applying bert_base_en_uncased, learning_rate, and dropout only</ins> (kerastuner 1.3.5)
   - running time
     > Slurm Job_id=544709 Name=t2-b.slurm Ended, Run time 1-03:23:30 
   - results
