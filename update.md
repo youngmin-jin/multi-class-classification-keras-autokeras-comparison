@@ -1,6 +1,7 @@
-# 281123
+# 061223
 Jin) 
-- The t2-b model with 'bert_large_en_uncased' is not working -> waiting the reply from the hpc team
+- The 'Resource exhausted' issues when running the t2-b is solved. 
+- Two results of running t2-b (with 'bert_base_en_uncased'/ with 'bert_large_en_uncased') are updated.
 <br/>
 
 ## The original result and best hyperparameters (in the dissertation)<br/>
@@ -51,15 +52,26 @@ Jin)
     > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/1cd8df18-0ee0-4381-b087-2228f3970a91)
   - The full result can be confirmed here https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/issues/20#issue-1977641140 <br/><br/>
 
-### t2-b: <ins>when applying bert_base_en_uncased, learning_rate, and dropout only</ins> (kerastuner 1.3.5)
+### t2-b 
+1) when applying **'bert_base_en_uncased'** with all dropout, LR, batchsize range used (kerastuner 1.3.5)
   - running time
-    > Slurm Job_id=544709 Name=t2-b.slurm Ended, Run time 1-03:23:30 
+    > Slurm Job_id=611888 Name=t2-b_new.slurm Ended, Run time **05:48:29**
   - results
-    > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/6693b5f7-aecc-4fe7-a2c1-d3fea26a827e) <br/>
-    > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/7b962d72-6dd4-4111-af4f-b70ed8792d99)
+    > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/fd8679b2-cae0-436b-8ae8-64755b74aa6a) <br/>
+    > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/c4c1e6f9-f1ef-47a4-8f83-8a84b91927f8)
   - best parameter
-    > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/9f07876e-e4fd-454c-a4ab-cc11f7767c67)
-  - The full result can be confirmed here https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/issues/22#issue-1994901507 <br/><br/>
+    > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/5362e68b-a3e9-4174-a6ba-969ab501f241)
+  - The full result can be confirmed here https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/issues/23#issue-2027595019 <br/><br/>
+
+1) when applying **'bert_large_en_uncased'** with all dropout, LR, batchsize range used (kerastuner 1.3.5)
+  - running time
+    > Slurm Job_id=611887 Name=t2-b_new.slurm Ended, Run time **05:48:18**
+  - results
+    > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/92fabf43-acd8-4ba8-af5e-e0f2b67912c4)<br/>
+    > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/79403f6d-f3c9-41e4-8ed0-dc0346223e4d)
+  - best parameter
+    > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/99a8ea7d-30da-4beb-ac95-51b549a3717b)
+  - The full result can be confirmed here https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/issues/24#issue-2027595343 <br/><br/>
 
 ### t3: <ins>completed</ins> 
   - running time
