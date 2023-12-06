@@ -1,7 +1,7 @@
 # 061223
 Jin) 
 - The 'Resource exhausted' issues when running the t2-b is solved. 
-- Two results of running t2-b (with 'bert_base_en_uncased'/ with 'bert_large_en_uncased') are updated.
+- Two results of running t2-b (with 'bert_base_en_uncased'/ with 'bert_large_en_uncased') are updated. (epochs=5)
 <br/>
 
 ## The original result and best hyperparameters (in the dissertation)<br/>
@@ -53,7 +53,7 @@ Jin)
   - The full result can be confirmed here https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/issues/20#issue-1977641140 <br/><br/>
 
 ### t2-b 
-**1) when applying <ins>'bert_base_en_uncased'</ins> with all dropout, LR, batchsize range used** (kerastuner 1.3.5)
+**1) when applying <ins>'bert_base_en_uncased'</ins> with all dropout, LR, batchsize range used, epochs=5** (kerastuner 1.3.5)
   - running time
     > Slurm Job_id=611888 Name=t2-b_new.slurm Ended, Run time **05:48:29**
   - results
@@ -63,7 +63,7 @@ Jin)
     > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/5362e68b-a3e9-4174-a6ba-969ab501f241)
   - The full result can be confirmed here https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/issues/23#issue-2027595019 <br/><br/>
 
-**2) when applying <ins>'bert_large_en_uncased'</ins> with all dropout, LR, batchsize range used** (kerastuner 1.3.5)
+**2) when applying <ins>'bert_large_en_uncased'</ins> with all dropout, LR, batchsize range used, epochs=5** (kerastuner 1.3.5)
   - running time
     > Slurm Job_id=611887 Name=t2-b_new.slurm Ended, Run time **05:48:18**
   - results
