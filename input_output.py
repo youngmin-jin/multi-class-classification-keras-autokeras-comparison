@@ -6,29 +6,51 @@ from tensorflow import keras
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
+import os
+from tensorflow.keras.preprocessing.image import img_to_array, load_img
+
+
+# -------------------------------
+# replacing column names for structured data
+# -------------------------------
+def create_column_renames(columns):
+  renames = {}
+  for column in columns:
+    new_column = column
+    new_column = new_column.replace('%', 'per')
+    new_column = new_column.replace(' ', '_')
+    new_column = new_column.replace('-', '_')
+    renames[column] = new_column
+  return renames
+
+# -------------------------------
+# one hot encoding for structured data
+# -------------------------------
+def create_one_hot_encoding(df, columns):
+  for column in columns:
+    dummies = pd.get_dummies(df[column])
+    df.drop(column, axis=1, inplace=True)
+    df = pd.concat([df, dummies], axis=1)
+  return df
+
 
 # -------------------------------
 # create structured data input
 # -------------------------------
-def create_structured_input(model_name):
-  # read 
-  df = pd.read_csv('structured-bodyPerformance.csv', encoding='utf-8')
+def create_structured_input(filepath, flag_one_hot_encoding_on):
+  # read the data
+  df = pd.read_csv(filepath, encoding='utf-8')
   
-  # rename
-  df = df.rename({'body fat_%':'body_fat_per', 'sit and bend forward_cm':'sit_and_bend_forward_cm', 'sit-ups counts':'sit_ups_counts', 'broad jump_cm':'broad_jump_cm'}, axis=1)
+  # rename column names
+  renames = create_column_renames(df.columns)
+  df.rename(columns=renames, inplace=True)
   
-  if model_name == "s3":
+  if flag_one_hot_encoding_on == True:
     return train_test_split(df.drop('class', axis=1), df[['class']], train_size= 0.7)
   
   else:
     # one hot encoding
-    dummies = pd.get_dummies(df['gender'])
-    df.drop('gender', axis=1, inplace=True)
-    df = pd.concat([df, dummies], axis=1)
-    
-    dummies = pd.get_dummies(df['class'])
-    df.drop('class', axis=1, inplace=True)
-    df = pd.concat([df, dummies], axis=1)
+    df = create_one_hot_encoding(df, ['gender','class'])
     
     # split into training and test datasets
     target = ['A','B','C','D']
@@ -39,19 +61,17 @@ def create_structured_input(model_name):
 # -------------------------------
 # create text data input
 # -------------------------------
-def create_text_input(model_name):
+def create_text_input(filepath, flag_one_hot_encoding_on):
   # read the data
-  df = pd.read_csv('text-FinancialSentimentAnalysis.csv', encoding='utf-8')
+  df = pd.read_csv(filepath, encoding='utf-8')
   
-  if model_name == "t3":
-    x_train, x_test, y_train, y_test = train_test_split(df[['Sentence']], df[['Sentiment']], train_size= 0.3)  
+  if flag_one_hot_encoding_on == True:
+    x_train, x_test, y_train, y_test = train_test_split(df[['Sentence']], df[['Sentiment']], train_size= 0.7)  
     return np.array(x_train), np.array(x_test), np.array(y_train), np.array(y_test)
   
   else:
-    # one hot encoding
-    dummies = pd.get_dummies(df['Sentiment'])
-    df.drop('Sentiment', axis=1, inplace=True)
-    df = pd.concat([df, dummies], axis=1)
+    # one hot encoding    
+    df = create_one_hot_encoding(df, ['Sentiment'])
     
     # prepare for the splitting
     num = df.shape[0] * 0.7
@@ -98,9 +118,9 @@ def create_text_input(model_name):
 # -------------------------------
 # create image data input
 # -------------------------------
-def create_image_input(model_name):
+def create_image_input(filepath, flag_one_hot_encoding_on):
   # preparation for implementing image data
-  data_dir = 'Multi-class Weather Dataset'
+  data_dir = filepath
   image_size = (180, 180)
   images = []
   labels = []
@@ -126,7 +146,7 @@ def create_image_input(model_name):
   images_array = np.stack(images)
   labels_array = np.array(labels)
   
-  if model_name == "i3":
+  if flag_one_hot_encoding_on == True:
     return train_test_split(images_array, labels_array, train_size=0.7)
 
   else:
@@ -135,8 +155,8 @@ def create_image_input(model_name):
     
     # data augmentation model
     data_augmentation = keras.Sequential(
-        [layers.RandomFlip('horizontal')
-          , layers.RandomRotation(0.1)
+        [keras.layers.RandomFlip('horizontal')
+          , keras.layers.RandomRotation(0.1)
         ]
     )
     
