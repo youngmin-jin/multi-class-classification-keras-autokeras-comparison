@@ -63,10 +63,9 @@ x_train, x_test, y_train, y_test = train_test_split(images_array, labels_array, 
 
 # data augmentation model
 data_augmentation = keras.Sequential(
-    [layers.BatchNormalization()
-     , layers.RandomFlip('horizontal')
+    [
+     layers.RandomFlip('horizontal')
      , layers.RandomRotation(0.1)
-     , layers.RandomContrast(0.1)
     ]
 )
 
@@ -84,21 +83,26 @@ y_test = pd.get_dummies(y_test)
 # i2 
 # -------------------------------
 def i2_create_model(hp):
-#  image_size = (180, 180)
   image_size = (224,224)
   inputs = keras.Input(shape=image_size+(3,)) 
 
+  x = keras.layers.BatchNormalization()(inputs)
+  # x = keras.layers.RandomFlip('horizontal')(x)
+  # x = keras.layers.RandomContrast(0.1)(x)
+  x = keras.layers.Resizing(224,224)(x)
   xception_model = keras.applications.Xception(
-      include_top=False
-      , weights='imagenet'
-      , pooling=hp.Choice("pooling", values=['avg','max'])
-  )(inputs)
-  x = keras.layers.Dense(hp.Choice('neuron', values=[100,500,1000,1500,2000]), activation=hp.Choice('activation', values=['relu','sigmoid','tanh']))(xception_model)
+      include_top=False,
+      weights='imagenet',
+      pooling=hp.Choice("pooling", values=['avg', 'max'])
+  )(x)
+  # x = layers.GlobalAveragePooling2D()(xception_model)
+  
+  # x = keras.layers.Dense(hp.Choice('neuron', values=[100,500,1000,1500,2000]), activation=hp.Choice('activation', values=['relu','sigmoid','tanh']))(xception_model)
 #  for i in range(hp.Int('hidden_layers', 0, 2)):
 #    x = keras.layers.Dense(hp.Choice('neuron', values=[100,500,1000,1500,2000]), activation=hp.Choice('activation', values=['relu','sigmoid','tanh']))(x)
 #  x = layers.Dropout(hp.Choice('dropout', values=[0.0,0.2,0.5]))(x)
   
-  outputs = keras.layers.Dense(4, activation='softmax')(x)  
+  outputs = keras.layers.Dense(4, activation='softmax')(xception_model)  
   model = keras.Model(inputs, outputs)
   model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
   return model
@@ -111,7 +115,7 @@ i2_model = keras_tuner.GridSearch(
 )
 
 # search
-num_epochs = 5
+num_epochs = 10
 i2_model.search(x_train, y_train, epochs=num_epochs)
 
 # best model results
@@ -119,8 +123,8 @@ print("---------------- best params --------------------")
 i2_best_param = i2_model.get_best_hyperparameters(num_trials=1)[0]
 # print("weights: ", i2_best_param.get("weights"))
 print("pooling: ", i2_best_param.get("pooling"))
-print("neuron: ", i2_best_param.get("neuron"))
-print("activation: ", i2_best_param.get("activation"))
+# print("neuron: ", i2_best_param.get("neuron"))
+# print("activation: ", i2_best_param.get("activation"))
 # print("dropout: ", i2_best_param.get("dropout"))
 # print("hidden_layers: ", i2_best_param.get("hidden_layers"))
 
