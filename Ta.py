@@ -18,44 +18,24 @@ print('autokeras', ak.__version__)
 # -------------------------------
 # read the data
 # -------------------------------
-x_train, x_test, y_train, y_test = create_structured_input("structured-bodyPerformance.csv", False)
+x_train, x_test, y_train, y_test = create_text_input('text-FinancialSentimentAnalysis.csv', False, False)
 
 # -------------------------------
-# Sa
+# Ta
 # -------------------------------
 # model
-Sa_model = ak.StructuredDataClassifier(num_classes=4, metrics=['accuracy'], overwrite=True, max_trials=2)
+Ta_model = ak.TextClassifier(num_classes=3, metrics=['accuracy'], overwrite=True, max_trials=2)
 
 # fit
 num_epochs = 3
-Sa_model.fit(x_train, y_train, epochs=num_epochs)
+Ta_model.fit(x_train, y_train, epochs=num_epochs)
 
 # summary 
-Sa_model_result = Sa_model.export_model()
-print(Sa_model_result.summary())
+Ta_model_result = Ta_model.export_model()
+print(Ta_model_result.summary())
 
 # distributions of classes
 distributions_of_classes(y_train, y_test)
 
 # actual and predicted y values/ confusion_matrix
-generate_confusion_matrix(Sa_model, "Sa_model", x_test, y_test)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+generate_confusion_matrix(Ta_model, "Ta_model", x_test, y_test)
