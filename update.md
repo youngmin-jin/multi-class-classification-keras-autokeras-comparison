@@ -1,13 +1,11 @@
-# 061223
+# 140123
 Jin) 
-- The 'Resource exhausted' issues when running the t2-b is solved. 
-- Two results of running t2-b (with 'bert_base_en_uncased'/ with 'bert_large_en_uncased') are updated. (epochs=5)
+- Input_output.py are applied to all models and the names are updated (e.g., s1-> Sm, s2-> So..). This file covers tasks such as reading data, creating confusion maxtirx, returing the distributions of classes, other repetitive works and etc.
+- After applying input_output.py to the models, I executed test runs and there was no problem from all the models. So I have started submitting slurm jobs to execute all models (except for Io2) in Stanage HPC.
+- Io2 model (Xception model with grid search) works okay but needs finetuning to get the higher accuracy. While waiting all model results come out, I will focus on this task.
 <br/>
 
-## The original result and best hyperparameters (in the dissertation)<br/>
-  > ![image](https://github.com/youngmin-jin/python-multi-class-classification-keras-autokeras-comparison/assets/135728064/5f88408a-13fc-4942-9130-14bc750f3313) <br/><br/>
-<br/>
-
+# $${\color{red}Legacy \space model \space names \space below \space (These \space will \space be \space updated \space soon)}$$
 ## Structured data models
 ### s1: <ins>completed</ins>
   - running time
