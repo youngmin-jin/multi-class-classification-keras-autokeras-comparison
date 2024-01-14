@@ -1,6 +1,6 @@
 # 140123
 Jin) 
-- Input_output.py are applied to all models and the names are updated (e.g., s1-> Sm, s2-> So..). This file covers tasks such as reading data, creating confusion maxtirx, returing the distributions of classes, other repetitive works and etc.
+- Input_output.py is applied to all models and the names are updated (e.g., s1-> Sm, s2-> So..). Input_output.py covers tasks such as reading data, creating confusion maxtirx, returing the distributions of classes, other repetitive works and etc.
 - After applying input_output.py to the models, I executed test runs and there was no problem from all the models. So I have started submitting slurm jobs to execute all models (except for Io2) in Stanage HPC.
 - Io2 model (Xception model with grid search) works okay but needs finetuning to get the higher accuracy. While waiting all model results come out, I will focus on this task.
 <br/>
