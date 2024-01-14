@@ -8,7 +8,7 @@ from input_output import *
 from tensorflow.keras.applications.xception import preprocess_input
 
 # -------------------------------
-# version check
+# version check 
 # -------------------------------
 print('tensorflow', tf.__version__)
 print('keras', keras.__version__)
