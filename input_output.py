@@ -10,7 +10,7 @@ import os
 from tensorflow.keras.preprocessing.image import img_to_array, load_img
 
 # ----------------------------------------------
-# train_size/ necessary variables
+# train_size/ necessary variables 
 # ----------------------------------------------
 train_size = 0.7
 
