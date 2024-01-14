@@ -1,4 +1,4 @@
-# libraries 
+# libraries
 import numpy as np
 import pandas as pd
 import tensorflow as tf
@@ -8,7 +8,6 @@ from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
 import os
 from tensorflow.keras.preprocessing.image import img_to_array, load_img
-# import tensorflow_datasets as tfds
 
 # ----------------------------------------------
 # train_size/ necessary variables
@@ -26,6 +25,9 @@ batch_size = 32
 max_features = 20000
 sequency_length = 500
 embedding_dim = 128
+
+# - image data
+image_size = (180, 180)
 
 # ----------------------------------------------
 # - structured data & text data
@@ -106,22 +108,32 @@ def get_best_model(trained_model, *args):
 # ----------------------------------------------
 def distributions_of_classes(y_train, y_test):
   print("-------------- distribution of classes ------------")
-  print("--- y_train ---"), '\n', print(y_train.value_counts())
-  print("--- y_test ---"), '\n', print(y_test.value_counts())    
+  print("--- y_train ---"), '\n'
+  if isinstance(y_train, np.ndarray):
+    unique, counts = np.unique(y_train, return_counts=True)
+    print(np.asarray((unique, counts)).T)
+  else:
+    print(y_train.value_counts())    
+
+  print("--- y_test ---"), '\n'
+  if isinstance(y_test, np.ndarray):
+    unique, counts = np.unique(y_test, return_counts=True)
+    print(np.asarray((unique, counts)).T)
+  else:
+    print(y_test.value_counts())      
 
 # ----------------------------------------------
 # generate confusion matrix
 # ----------------------------------------------
 def generate_confusion_matrix(trained_model, str_trained_model, x_test, y_test):  
-  if str_trained_model.startswith(("Sa","Ia")):
-    y_actual = y_test.to_numpy()
+  if str_trained_model.startswith(("Sa","Ia","Ta")):
+    if str_trained_model.startswith("Sa"):
+      y_actual = y_test.to_numpy()
+    else:
+      y_actual = y_test
     y_predict = trained_model.predict(x_test)
     y_predict = y_predict.flatten()
-  
-  elif str_trained_model.startswith("Ta"):
-    y_actual = y_test
-    y_predict = trained_model.predict(x_test)
-            
+              
   elif str_trained_model.startswith(("Tm","To")): # Tm, To1, To2
     train_ds = x_test
     test_ds = y_test
@@ -249,8 +261,11 @@ def create_image_input(filepath, flag_one_hot_encoding_on):
           image_path = os.path.join(class_dir, image_file)
           image = load_img(image_path)
           
-          # convert images into array/ append images and labels to the arrays
+          # resize data to form the same shape/ convert images into array
+          image = image.resize(image_size)
           image = img_to_array(image)
+                    
+          # append images and labels to the arrays
           images.append(image)        
           labels.append(class_name)
   
