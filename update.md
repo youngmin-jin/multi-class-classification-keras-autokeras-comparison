@@ -1,8 +1,7 @@
-# 140123
+# 050224
 Jin) 
-- Input_output.py is applied to all models and the names are updated (e.g., s1-> Sm, s2-> So..). Input_output.py covers tasks such as reading data, creating confusion maxtirx, returing the distributions of classes, other repetitive works and etc.
-- After applying input_output.py to the models, I executed test runs and there was no problem from all the models. So I have started submitting slurm jobs to execute all models (except for Io2) in Stanage HPC.
-- Io2 model (Xception model with grid search) works okay but needs finetuning to get the higher accuracy. While waiting all model results come out, I will focus on this task.
+- All models appear to be re-run using at least two GPUs (To2 model might require more). The re-running of the To2 model is in progress to clarify if it doesn't work with two GPUs.
+- Io2 model acheived the highest accuracy of 0.93, indicating that further finetuning is required.
 <br/>
 
 # $${\color{red}Legacy \space model \space names \space below \space (These \space will \space be \space updated \space soon)}$$
