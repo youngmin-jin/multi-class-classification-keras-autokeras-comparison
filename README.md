@@ -1,11 +1,11 @@
-# 050224
+# 280224
 Jin) 
-- All models appear to be re-run using at least two GPUs (To2 model might require more). The re-running of the To2 model is in progress to clarify if it doesn't work with two GPUs.
-- Io2 model acheived the highest accuracy of 0.93, indicating that further finetuning is required.
+- Io2 model acheived the highest accuracy of 0.98 by applying early stopping, epochs=100, and randomContrast [0.002,0.0025,0.003,0.0035,0.004]. 
+- All models run well with only two GPUs requests in slurm files. However, To2 model seems to require more resources, as it kept failing. The request to HPC is currently in progress.
 <br/>
 
 
-# $${\color{red}Legacy \space model \space names \space below \space (These \space will \space be \space updated \space soon)}$$
+# $${\color{red}Legacy \space results \space below \space} (These \space will \space be \space updated \space later)$$
 ## Structured data models
 ### s1: <ins>completed</ins>
   - running time
