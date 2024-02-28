@@ -30,16 +30,16 @@ def Io2_create_model(hp):
 
   # hidden layers
   x = keras.layers.RandomFlip(hp.Choice("random_flip", values=['vertical','horizontal','horizontal_and_vertical']))(inputs)
-  x = keras.layers.RandomContrast(hp.Choice("random_contrast", values=[0.1,0.5]))(x)
-  x = keras.layers.BatchNormalization(momentum=hp.Choice("momentum", values=[0.5,0.99]))(x)
+  x = keras.layers.RandomContrast(hp.Choice("random_contrast", values=[0.002,0.0025,0.003,0.0035,0.004]))(x)
+  # x = keras.layers.BatchNormalization(momentum=hp.Choice("momentum", values=[0.5,0.99]))(x)
+  x = keras.layers.BatchNormalization()(x)
   x = keras.layers.Resizing(224,224)(x)
   x = keras.applications.Xception(
-      include_top=False,
-      weights='imagenet',
-      pooling=hp.Choice("pooling", values=['avg', 'max'])
+      input_shape=(224,224,3)
+      , include_top=False
+      , weights='imagenet'
+      , pooling=hp.Choice("pooling", values=['avg', 'max'])
   )(x)
-#  x = keras.layers.GlobalAveragePooling2D()(x)
-#  x = keras.layers.Dense(200, activation=hp.Choice("activation", values=['relu','sigmoid']))(x)
 
   # output layer
   outputs = keras.layers.Dense(4, activation='softmax')(x)  
@@ -53,15 +53,21 @@ Io2_model = keras_tuner.GridSearch(
   Io2_create_model
   , objective='accuracy'
   , overwrite=True
-  , max_trials=20
+)
+
+# early stopping
+es = keras.callbacks.EarlyStopping(
+  monitor="val_accuracy"
+  , patience=5
+  , restore_best_weights=True
 )
 
 # search
-num_epochs = 5
-Io2_model.search(x_train, y_train, epochs=num_epochs)
+num_epochs = 100
+Io2_model.search(x_train, y_train, epochs=num_epochs, validation_split=0.2, callbacks=[es])
 
 # best parameters
-get_best_params(Io2_model, "pooling", "random_flip", "random_contrast", "momentum")
+get_best_params(Io2_model, "pooling", "random_flip", "random_contrast")
 
 # best model summary 
 Io2_best_model = get_best_model(Io2_model, x_train, y_train)
