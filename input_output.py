@@ -10,7 +10,7 @@ import os
 from tensorflow.keras.preprocessing.image import img_to_array, load_img
 
 # ----------------------------------------------
-# train_size/ necessary variables 
+# train_size/ necessary variables
 # ----------------------------------------------
 train_size = 0.7
 
@@ -44,8 +44,8 @@ def create_one_hot_encoding(df, column):
 # - structured data & text data
 # split to x_train, x_test, y_train, y_test
 # ----------------------------------------------
-def split_training_test(df, column):
-  x_train, x_test, y_train, y_test = train_test_split(df.drop(column, axis=1), df[column], train_size=train_size)
+def split_training_test(df, target):
+  x_train, x_test, y_train, y_test = train_test_split(df.drop(target, axis=1), df[target], train_size=train_size)
   return x_train, x_test, y_train, y_test
 
 # ----------------------------------------------
@@ -61,26 +61,6 @@ def create_column_renames(columns):
     new_column = new_column.replace('-', '_')
     renames[column] = new_column
   return renames
-
-# ----------------------------------------------
-# - text data
-# split to df_train and df_test/ convert them to tf.dataset
-# ----------------------------------------------
-def split_convert_text_data(df, target_encoded_column_name):
-  # split to df_train and df_test
-  num = df.shape[0] * train_size
-  num = round(num)
-  df_train = df.loc[:num]
-  df_test = df.loc[num+1:]
-  
-  # save y_train and y_test for the distributions of classes
-  y_train = df_train[target_encoded_column_name]
-  y_test = df_test[target_encoded_column_name]
-   
-  # tf.data.Dataset 
-  train_ds = tf.data.Dataset.from_tensor_slices((df_train[text_predictor], df_train[target_encoded_column_name])).batch(batch_size=batch_size)
-  test_ds = tf.data.Dataset.from_tensor_slices((df_test[text_predictor], df_test[target_encoded_column_name])).batch(batch_size=batch_size)
-  return y_train, y_test, train_ds, test_ds
 
 # ----------------------------------------------
 # - o models
@@ -120,7 +100,7 @@ def distributions_of_classes(y_train, y_test):
     unique, counts = np.unique(y_test, return_counts=True)
     print(np.asarray((unique, counts)).T)
   else:
-    print(y_test.value_counts())      
+    print(y_test.value_counts())         
 
 # ----------------------------------------------
 # generate confusion matrix
@@ -134,19 +114,19 @@ def generate_confusion_matrix(trained_model, str_trained_model, x_test, y_test):
     y_predict = trained_model.predict(x_test)
     y_predict = y_predict.flatten()
               
-  elif str_trained_model.startswith(("Tm","To")): # Tm, To1, To2
-    train_ds = x_test
-    test_ds = y_test
-    y_actual = []
-    y_predict = []
-    for text, label in test_ds:
-      y_actual.append(label.numpy())
-      y_predict.append(trained_model.predict(text).argmax(axis=-1))
-    y_actual = np.concatenate(y_actual, axis=0)
-    y_actual = np.argmax(np.array(y_actual), axis=1)
-    y_predict = np.concatenate(y_predict, axis=0)
+  # elif str_trained_model.startswith(("Tm","To1")): # Tm, To1
+  #   train_ds = x_test
+  #   test_ds = y_test
+  #   y_actual = []
+  #   y_predict = []
+  #   for text, label in test_ds:
+  #     y_actual.append(label.numpy())
+  #     y_predict.append(trained_model.predict(text).argmax(axis=-1))
+  #   y_actual = np.concatenate(y_actual, axis=0)
+  #   y_actual = np.argmax(np.array(y_actual), axis=1)
+  #   y_predict = np.concatenate(y_predict, axis=0)
 
-  else: # Sm, So, Im, Io1, Io2
+  else: 
     y_actual = np.argmax(np.array(y_test), axis=1)
     y_predict = trained_model.predict(x_test)
     y_predict = y_predict.argmax(axis=-1)
@@ -196,7 +176,7 @@ def create_structured_input(filepath, flag_one_hot_encoding_on):
 # ==================================================================
 # create text data input
 # ==================================================================
-def create_text_input(filepath, flag_bert_on, flag_one_hot_encoding_on):
+def create_text_input(filepath, flag_one_hot_encoding_on, flag_bert_on):
   # set a target column and read the data
   target = text_target
   df = pd.read_csv(filepath, encoding='utf-8')
@@ -209,17 +189,15 @@ def create_text_input(filepath, flag_bert_on, flag_one_hot_encoding_on):
   else:
     # one hot encoding for categorical columns  
     df, target_encoded_column_name = create_one_hot_encoding(df, target)
+    x_train, x_test, y_train, y_test = split_training_test(df, target_encoded_column_name)
     
-    if flag_bert_on == True:
-      x_train, x_test, y_train, y_test = split_training_test(df, target_encoded_column_name)
+    # *************** maybe no need to encode y for bert???*****************
+    if flag_bert_on == True:   
       # convert df to series
       x_train = x_train.squeeze()
       return x_train, x_test, y_train, y_test
     
     else:      
-      # train and test datasets
-      y_train, y_test, train_ds, test_ds = split_convert_text_data(df, target_encoded_column_name)  
-      
       # text vectorization
       vectorize_layer = tf.keras.layers.TextVectorization(
           standardize='lower_and_strip_punctuation'
@@ -227,22 +205,12 @@ def create_text_input(filepath, flag_bert_on, flag_one_hot_encoding_on):
           , output_mode='int'
           , output_sequence_length=sequency_length
       )
+      vectorize_layer.adapt(x_train)      
       
-      # make a text-only dataset
-      text_ds = train_ds.map(lambda x,y: x)
-      
-      # call adapt on a text-only dataset to create the vacabulary
-      vectorize_layer.adapt(text_ds)
-      
-      def vectorize_text(text, label):
-        text = tf.expand_dims(text, -1)
-        return vectorize_layer(text), label
-      
-      # vectorize the data
-      train_ds = train_ds.map(vectorize_text)
-      test_ds = test_ds.map(vectorize_text)
-      
-      return y_train, y_test, train_ds, test_ds
+      x_train  = vectorize_layer(x_train)      
+      x_test  = vectorize_layer(x_test)
+            
+      return x_train, x_test, y_train, y_test
 
 
 # ==================================================================

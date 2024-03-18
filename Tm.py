@@ -1,9 +1,9 @@
-# libraries 
+# libraries
 import numpy as np
 import pandas as pd
 import tensorflow as tf
 from tensorflow import keras
-from input_output import *
+from input_output_test import *
 
 # -------------------------------
 # version check
@@ -14,8 +14,8 @@ print('keras', keras.__version__)
 # -------------------------------
 # read the data
 # -------------------------------
-y_train, y_test, train_ds, test_ds = create_text_input('text-FinancialSentimentAnalysis.csv', False, True)
-
+x_train, x_test, y_train, y_test = create_text_input('text-FinancialSentimentAnalysis.csv', True, False)
+    
 # -------------------------------
 # Tm 
 # -------------------------------
@@ -29,24 +29,24 @@ x = keras.layers.GlobalMaxPooling1D()(x)
 x = keras.layers.Dropout(0.5)(x)
 
 # output layer
-predictions = keras.layers.Dense(3, activation='softmax', name='predictions')(x)
+outputs = keras.layers.Dense(3, activation='softmax', name='predictions')(x)
 
 # model
-Tm_model = keras.Model(inputs, predictions)
+Tm_model = keras.Model(inputs, outputs)
 
 # compile
 Tm_model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
 # fit
+# num_epochs = 100
 num_epochs = 3
-Tm_model.fit(train_ds, epochs=num_epochs)
+Tm_model.fit(x_train, y_train, epochs=num_epochs)
 
-# summary
+# model summary
 print(Tm_model.summary())
 
 # distributions of classes
 distributions_of_classes(y_train, y_test)
 
 # actual and predicted y values/ confusion matrix
-generate_confusion_matrix(Tm_model, "Tm_model", train_ds, test_ds)
-
+generate_confusion_matrix(Tm_model, "Tm_model", x_test, y_test)
