@@ -19,7 +19,6 @@ structured_target = "class"
 
 # - text data
 text_target = "Sentiment"
-text_predictor = "Sentence"  
 
 batch_size = 32
 max_features = 20000
@@ -33,12 +32,12 @@ image_size = (180, 180)
 # - structured data & text data
 # one hot encoding for categorical columns
 # ----------------------------------------------
-def create_one_hot_encoding(df, column):
-  dummies = pd.get_dummies(df[column])
-  encoded_column_name = dummies.columns
-  df.drop(column, axis=1, inplace=True)
-  df = pd.concat([df, dummies], axis=1)
-  return df, encoded_column_name
+# def create_one_hot_encoding(df, column):
+#   dummies = pd.get_dummies(df[column])
+#   encoded_column_name = dummies.columns
+#   df.drop(column, axis=1, inplace=True)
+#   df = pd.concat([df, dummies], axis=1)
+#   return df, encoded_column_name
 
 # ----------------------------------------------
 # - structured data & text data
@@ -114,7 +113,6 @@ def generate_confusion_matrix(trained_model, str_trained_model, x_test, y_test):
     y_predict = trained_model.predict(x_test)
     y_predict = y_predict.flatten()
               
-<<<<<<< HEAD
   # elif str_trained_model.startswith(("Tm","To1")): # Tm, To1
   #   train_ds = x_test
   #   test_ds = y_test
@@ -128,22 +126,7 @@ def generate_confusion_matrix(trained_model, str_trained_model, x_test, y_test):
   #   y_predict = np.concatenate(y_predict, axis=0)
 
   else: 
-=======
-  elif str_trained_model.startswith(("Tm","To1")): # Tm, To1
-    train_ds = x_test
-    test_ds = y_test
-    y_actual = []
-    y_predict = []
-    for text, label in test_ds:
-      y_actual.append(label.numpy())
-      y_predict.append(trained_model.predict(text).argmax(axis=-1))
-    y_actual = np.concatenate(y_actual, axis=0)
-    y_actual = np.argmax(np.array(y_actual), axis=1)
-    y_predict = np.concatenate(y_predict, axis=0)
-
-  else: # Sm, So, Im, Io1, Io2, To2
->>>>>>> 11d222c7bf66e9bc89e284f66c3db69bedd36136
-    y_actual = np.argmax(np.array(y_test), axis=1)
+    y_actual = y_test.values.argmax(axis=1)
     y_predict = trained_model.predict(x_test)
     y_predict = y_predict.argmax(axis=-1)
 
@@ -225,7 +208,16 @@ def create_text_input(filepath, flag_one_hot_encoding_on, flag_bert_on):
       
       x_train  = vectorize_layer(x_train)      
       x_test  = vectorize_layer(x_test)
-            
+      
+      
+      # one-hot encode y labels
+      y_train = pd.get_dummies(y_train)
+      y_test = pd.get_dummies(y_test)
+        
+      print("--------------- x_train y_train ----------------")
+      print(x_train)
+      print(y_train)
+      
       return x_train, x_test, y_train, y_test
 
 
