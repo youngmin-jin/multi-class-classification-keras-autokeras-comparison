@@ -134,7 +134,7 @@ def generate_confusion_matrix(trained_model, str_trained_model, x_test, y_test):
     y_predict = trained_model.predict(x_test)
     y_predict = y_predict.flatten()
               
-  elif str_trained_model.startswith(("Tm","To")): # Tm, To1, To2
+  elif str_trained_model.startswith(("Tm","To1")): # Tm, To1
     train_ds = x_test
     test_ds = y_test
     y_actual = []
@@ -146,7 +146,7 @@ def generate_confusion_matrix(trained_model, str_trained_model, x_test, y_test):
     y_actual = np.argmax(np.array(y_actual), axis=1)
     y_predict = np.concatenate(y_predict, axis=0)
 
-  else: # Sm, So, Im, Io1, Io2
+  else: # Sm, So, Im, Io1, Io2, To2
     y_actual = np.argmax(np.array(y_test), axis=1)
     y_predict = trained_model.predict(x_test)
     y_predict = y_predict.argmax(axis=-1)
