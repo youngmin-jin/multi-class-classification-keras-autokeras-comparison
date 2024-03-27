@@ -32,12 +32,12 @@ image_size = (180, 180)
 # - structured data & text data
 # one hot encoding for categorical columns
 # ----------------------------------------------
-# def create_one_hot_encoding(df, column):
-#   dummies = pd.get_dummies(df[column])
-#   encoded_column_name = dummies.columns
-#   df.drop(column, axis=1, inplace=True)
-#   df = pd.concat([df, dummies], axis=1)
-#   return df, encoded_column_name
+def create_one_hot_encoding(df, column):
+  dummies = pd.get_dummies(df[column])
+  encoded_column_name = dummies.columns
+  df.drop(column, axis=1, inplace=True)
+  df = pd.concat([df, dummies], axis=1)
+  return df, encoded_column_name
 
 # ----------------------------------------------
 # - structured data & text data
@@ -194,6 +194,7 @@ def create_text_input(filepath, flag_one_hot_encoding_on, flag_bert_on):
     if flag_bert_on == True:   
       # convert df to series
       x_train = x_train.squeeze()
+      x_test = x_test.squeeze()
       return x_train, x_test, y_train, y_test
     
     else:      
