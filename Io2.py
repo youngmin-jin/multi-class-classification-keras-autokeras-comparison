@@ -20,7 +20,7 @@ print('keras_tuner', keras_tuner.__version__)
 x_train, x_test, y_train, y_test = create_image_input('Multi-class Weather Dataset',True)
 
 # -------------------------------
-# Io2 
+# Io2
 # -------------------------------
 def Io2_create_model(hp):
   # image_size = (224,224)
@@ -30,7 +30,7 @@ def Io2_create_model(hp):
 
   # hidden layers
   x = keras.layers.RandomFlip(hp.Choice("random_flip", values=['vertical','horizontal','horizontal_and_vertical']))(inputs)
-  x = keras.layers.RandomContrast(hp.Choice("random_contrast", values=[0.002,0.0025,0.003,0.0035,0.004]))(x)
+  x = keras.layers.RandomContrast(hp.Choice("random_contrast", values=[0.002,0.0022,0.0024,0.0026,0.0028,0.003]))(x)
   # x = keras.layers.BatchNormalization(momentum=hp.Choice("momentum", values=[0.5,0.99]))(x)
   x = keras.layers.BatchNormalization()(x)
   x = keras.layers.Resizing(224,224)(x)
@@ -63,8 +63,9 @@ es = keras.callbacks.EarlyStopping(
 )
 
 # search
-num_epochs = 100
+num_epochs = 50
 Io2_model.search(x_train, y_train, epochs=num_epochs, validation_split=0.2, callbacks=[es])
+# Io2_model.search(x_train, y_train, epochs=num_epochs)
 
 # best parameters
 get_best_params(Io2_model, "pooling", "random_flip", "random_contrast")
