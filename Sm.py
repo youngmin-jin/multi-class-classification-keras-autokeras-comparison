@@ -1,4 +1,4 @@
-# libraries 
+# libraries
 import numpy as np
 import pandas as pd
 import tensorflow as tf
@@ -19,8 +19,10 @@ x_train, x_test, y_train, y_test = create_structured_input("structured-bodyPerfo
 # -------------------------------
 # Sm 
 # -------------------------------
-# build a sequential model
+# model
 Sm_model = keras.models.Sequential()
+
+# layers
 Sm_model.add(keras.layers.Dense(128, input_shape=(x_train.shape[1],), activation='relu'))
 Sm_model.add(keras.layers.Dense(128, activation='relu'))
 Sm_model.add(keras.layers.Dense(128, activation='relu'))
@@ -31,7 +33,7 @@ Sm_model.add(keras.layers.Dense(4, activation='softmax'))
 Sm_model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
 # fit
-num_epochs = 3
+num_epochs = 100
 Sm_model.fit(x_train, y_train, epochs=num_epochs)
 
 # summary 

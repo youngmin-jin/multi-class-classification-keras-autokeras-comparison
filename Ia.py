@@ -24,10 +24,11 @@ x_train, x_test, y_train, y_test = create_image_input('Multi-class Weather Datas
 # Ia
 # -------------------------------
 # model
-Ia_model = ak.ImageClassifier(num_classes=4, metrics=['accuracy'], overwrite=True, max_trials=2)
+Ia_model = ak.ImageClassifier(num_classes=4, metrics=['accuracy'], overwrite=True)
 
 # fit
-num_epochs = 3
+num_epochs = 100
+# num_epochs = 50
 Ia_model.fit(x_train, y_train, epochs=num_epochs)
 
 # summary 
@@ -38,4 +39,4 @@ print(Ia_model_result.summary())
 distributions_of_classes(y_train, y_test)
 
 # actual and predicted y values/ confusion_matrix
-generate_confusion_matrix(Ia_model, "Ia", x_test, y_test)
+generate_confusion_matrix(Ia_model, "Ia_model", x_test, y_test)

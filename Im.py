@@ -38,7 +38,7 @@ Im_model = keras.Model(inputs, outputs)
 Im_model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
 # fit
-num_epochs = 3
+num_epochs = 100
 Im_model.fit(x_train, y_train, epochs=num_epochs)
 
 # summary

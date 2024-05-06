@@ -1,4 +1,4 @@
-# libraries 
+# libraries
 import numpy as np
 import pandas as pd
 import tensorflow as tf
@@ -16,23 +16,30 @@ print('keras_tuner', keras_tuner.__version__)
 # -------------------------------
 # read the data
 # -------------------------------
-y_train, y_test, train_ds, test_ds = create_text_input('text-FinancialSentimentAnalysis.csv', False, True)
+y_train, y_test, train_ds, test_ds = create_text_input('text-FinancialSentimentAnalysis.csv', True, False)
 
 # -------------------------------
 # To1
 # -------------------------------
-# model
 def To1_create_model(hp):
+  # input layer
   inputs = keras.Input(shape=(None,), dtype='int64')
+  
+  # embedding layer
   x = keras.layers.Embedding(max_features, embedding_dim)(inputs) 
+  
+  # hidden layers
   for i in range(hp.Int('hidden_layers', 1, 3)):
     x = keras.layers.Conv1D(hp.Choice('neuron', values=[100,500,1000,1500,2000])
     , 3, strides=2, padding='same'
     , activation=hp.Choice('activation', values=['relu','sigmoid','tanh']))(x)
   x = keras.layers.GlobalMaxPooling1D()(x)
   x = keras.layers.Dropout(hp.Choice('dropout', values=[0.0,0.2,0.5]))(x)
-  predictions = keras.layers.Dense(3, activation='softmax', name='predictions')(x)
-  model = keras.Model(inputs, predictions)
+  
+  # output layer
+  outputs = keras.layers.Dense(3, activation='softmax', name='predictions')(x)
+  
+  model = keras.Model(inputs, outputs)
   model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
   return model
 
@@ -41,11 +48,10 @@ To1_model = keras_tuner.GridSearch(
   To1_create_model
   , objective='accuracy'
   , overwrite=True
-  , max_trials=2
 )
 
 # search
-num_epochs = 3
+num_epochs = 100
 To1_model.search(train_ds, epochs=num_epochs)
 
 # best parameters 

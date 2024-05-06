@@ -24,13 +24,13 @@ x_train, x_test, y_train, y_test = create_text_input('text-FinancialSentimentAna
 # Ta
 # -------------------------------
 # model
-Ta_model = ak.TextClassifier(num_classes=3, metrics=['accuracy'], overwrite=True, max_trials=2)
+Ta_model = ak.TextClassifier(num_classes=3, metrics=['accuracy'], overwrite=True)
 
 # fit
-num_epochs = 3
+num_epochs = 100
 Ta_model.fit(x_train, y_train, epochs=num_epochs)
 
-# summary 
+# model summary 
 Ta_model_result = Ta_model.export_model()
 print(Ta_model_result.summary())
 

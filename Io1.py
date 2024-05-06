@@ -48,11 +48,10 @@ Io1_model = keras_tuner.GridSearch(
   Io1_create_model
   , objective='accuracy'
   , overwrite=True
-  , max_trials=2
 )
 
 # search
-num_epochs = 3
+num_epochs = 100
 Io1_model.search(x_train, y_train, epochs=num_epochs)
 
 # best parameters

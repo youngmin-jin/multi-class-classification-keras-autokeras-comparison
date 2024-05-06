@@ -24,13 +24,19 @@ x_train, x_test, y_train, y_test = create_structured_input("structured-bodyPerfo
 # Sa
 # -------------------------------
 # model
-Sa_model = ak.StructuredDataClassifier(num_classes=4, metrics=['accuracy'], overwrite=True, max_trials=2)
+Sa_model = ak.StructuredDataClassifier(
+  num_classes=4
+  , metrics=['accuracy']
+  , overwrite=True
+  , max_trials=3
+)
 
 # fit
-num_epochs = 3
+# num_epochs = 100
+num_epochs = 5
 Sa_model.fit(x_train, y_train, epochs=num_epochs)
 
-# summary 
+# model summary 
 Sa_model_result = Sa_model.export_model()
 print(Sa_model_result.summary())
 
@@ -41,21 +47,5 @@ distributions_of_classes(y_train, y_test)
 generate_confusion_matrix(Sa_model, "Sa_model", x_test, y_test)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# save the best model 
+# Sa_model_result.save('Sa_0328_1050.h5', save_format='tf')
