@@ -1,10 +1,11 @@
-# 280224
+# 060524 
 Jin) 
-- Io2 model acheived the highest accuracy of 0.98 by applying early stopping, epochs=100, and randomContrast [0.002,0.0025,0.003,0.0035,0.004]. 
-- All models run well with only two GPUs requests in slurm files. However, To2 model seems to require more resources, as it kept failing. The request to HPC is currently in progress.
-<br/>
+- Image dataset has been changed from weather images to fungi images
+  - Io2 model developing is in progress
+- Paper review is in progress
 
 
+<br/><br/>
 # $${\color{red}Legacy \space results \space below \space} (These \space will \space be \space updated \space later)$$
 ## Structured data models
 ### s1: <ins>completed</ins>
