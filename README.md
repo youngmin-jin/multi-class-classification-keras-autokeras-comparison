@@ -1,6 +1,6 @@
 # 060524 
 Jin) 
-- Image dataset has been changed from weather images to fungi images
+- Image dataset has been changed from weather images to [fungi images](https://www.kaggle.com/datasets/anshtanwar/microscopic-fungi-images)  
   - Io2 model developing is in progress
 - Paper review is in progress
 
