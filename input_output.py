@@ -10,27 +10,29 @@ import os
 from tensorflow.keras.preprocessing.image import img_to_array, load_img
 
 # ----------------------------------------------
-# train_size/ necessary variables
+# variables
 # ----------------------------------------------
+# train size
 train_size = 0.7
 
-# - structured data
-structured_target = "class"
+# structured data
+structured_target = 'class'
+structured_categorical_col = 'gender'
 
-# - text data
-text_target = "Sentiment"
+# text data
+text_target = 'Sentiment'
 
 batch_size = 32
 max_features = 20000
 sequency_length = 500
 embedding_dim = 128
 
-# - image data
+# image data
 image_size = (180, 180)
 
 # ----------------------------------------------
-# - structured data & text data
-# one hot encoding for categorical columns
+# structured data & text data
+# - one hot encoding for categorical columns
 # ----------------------------------------------
 def create_one_hot_encoding(df, column):
   dummies = pd.get_dummies(df[column])
@@ -40,16 +42,16 @@ def create_one_hot_encoding(df, column):
   return df, encoded_column_name
 
 # ----------------------------------------------
-# - structured data & text data
-# split to x_train, x_test, y_train, y_test
+# structured data & text data
+# - split to x_train, X_test, y_train, y_test
 # ----------------------------------------------
 def split_training_test(df, target):
-  x_train, x_test, y_train, y_test = train_test_split(df.drop(target, axis=1), df[target], train_size=train_size)
-  return x_train, x_test, y_train, y_test
+  X_train, X_test, y_train, y_test = train_test_split(df.drop(target, axis=1), df[target], train_size=train_size)
+  return X_train, X_test, y_train, y_test
 
 # ----------------------------------------------
-# - structured data
-# replace column names
+# structured data
+# - replace column names
 # ----------------------------------------------
 def create_column_renames(columns):
   renames = {}
@@ -62,8 +64,8 @@ def create_column_renames(columns):
   return renames
 
 # ----------------------------------------------
-# - o models
-# print the best parameters
+# o models
+# - print the best hyperparameters
 # ----------------------------------------------
 def get_best_params(trained_model, *args):
   print("---------------- best params -----------------")
@@ -72,8 +74,8 @@ def get_best_params(trained_model, *args):
     print(arg, ": ", best_params.get(arg)) 
 
 # ----------------------------------------------
-# - o models
-# return the best model
+# o models
+# - return the best model
 # ----------------------------------------------
 def get_best_model(trained_model, *args):
   print("------------ best model summary -------------")
@@ -104,45 +106,26 @@ def distributions_of_classes(y_train, y_test):
 # ----------------------------------------------
 # generate confusion matrix
 # ----------------------------------------------
-def generate_confusion_matrix(trained_model, str_trained_model, x_test, y_test):  
+def generate_confusion_matrix(trained_model, str_trained_model, X_test, y_test):  
   if str_trained_model.startswith(("Sa","Ia","Ta")):
     if str_trained_model.startswith("Sa"):
       y_actual = y_test.to_numpy()
     else:
       y_actual = y_test
-    y_predict = trained_model.predict(x_test)
+    y_predict = trained_model.predict(X_test)
     y_predict = y_predict.flatten()
-              
-  # elif str_trained_model.startswith(("Tm","To1")): # Tm, To1
-  #   train_ds = x_test
-  #   test_ds = y_test
-  #   y_actual = []
-  #   y_predict = []
-  #   for text, label in test_ds:
-  #     y_actual.append(label.numpy())
-  #     y_predict.append(trained_model.predict(text).argmax(axis=-1))
-  #   y_actual = np.concatenate(y_actual, axis=0)
-  #   y_actual = np.argmax(np.array(y_actual), axis=1)
-  #   y_predict = np.concatenate(y_predict, axis=0)
 
   else: 
     y_actual = y_test.values.argmax(axis=1)
-    y_predict = trained_model.predict(x_test)
+    y_predict = trained_model.predict(X_test)
     y_predict = y_predict.argmax(axis=-1)
 
-  # print actual values
   print("----------------- y_actual ----------------------")
-  print(y_actual)
-  
-  # print predicted values
+  print(y_actual)  
   print("----------------- y_predict ----------------------")
   print(y_predict)
-
-  # confusion matrix
   print("----------------- confusion matrix ----------------------")
   print(confusion_matrix(y_actual, y_predict))
-    
-  # confusion report
   print("----------------- confusion report ----------------------")
   print(classification_report(y_actual, y_predict))
 
@@ -151,8 +134,7 @@ def generate_confusion_matrix(trained_model, str_trained_model, x_test, y_test):
 # create structured data input
 # ==================================================================
 def create_structured_input(filepath, flag_one_hot_encoding_on):
-  # set a target column and read the data
-  target = structured_target
+  # read the data
   df = pd.read_csv(filepath, encoding='utf-8')
   
   # rename column names
@@ -161,14 +143,14 @@ def create_structured_input(filepath, flag_one_hot_encoding_on):
   
   # return the raw data for automatic models
   if flag_one_hot_encoding_on == False:
-    return split_training_test(df, target)
+    return split_training_test(df, structured_target)
   
   else:
-    # one hot encoding for categorical columns
-    df, gender_encoded_column_name = create_one_hot_encoding(df, 'gender')
-    df, target_encoded_column_name = create_one_hot_encoding(df, target)
+    # apply one-hot encoding to categorical column and target column
+    df, gender_encoded_column_name = create_one_hot_encoding(df, structured_categorical_col)
+    df, target_encoded_column_name = create_one_hot_encoding(df, structured_target)
     
-    # split into training and test datasets
+    # return the one-hot encoded data for minimal and optimized models
     return split_training_test(df, target_encoded_column_name)
     
 
@@ -176,27 +158,28 @@ def create_structured_input(filepath, flag_one_hot_encoding_on):
 # create text data input
 # ==================================================================
 def create_text_input(filepath, flag_one_hot_encoding_on, flag_bert_on):
-  # set a target column and read the data
-  target = text_target
+  # read the data
   df = pd.read_csv(filepath, encoding='utf-8')
   
-  # return the raw data for automatic models
+  if flag_bert_on == True:
+    return split_training_test(df, text_target)
+  
+  # return the data converted to np.array for automatic models
   if flag_one_hot_encoding_on == False:
-    x_train, x_test, y_train, y_test = split_training_test(df, target)
-    return np.array(x_train), np.array(x_test), np.array(y_train), np.array(y_test)
+    X_train, X_test, y_train, y_test = split_training_test(df, text_target)
+    return np.array(X_train), np.array(X_test), np.array(y_train), np.array(y_test)
   
   else:
-    # one hot encoding for categorical columns  
-    df, target_encoded_column_name = create_one_hot_encoding(df, target)
-    x_train, x_test, y_train, y_test = split_training_test(df, target_encoded_column_name)
+    # apply one hot encoding to the target column 
+    df, target_encoded_column_name = create_one_hot_encoding(df, text_target)
+    X_train, X_test, y_train, y_test = split_training_test(df, target_encoded_column_name)
     
-    # *************** maybe no need to encode y for bert???*****************
+    # return the data converted to series for an optimized model (using BERT) 
     if flag_bert_on == True:   
-      # convert df to series
-      x_train = x_train.squeeze()
-      x_test = x_test.squeeze()
-      return x_train, x_test, y_train, y_test
-    
+      X_train = X_train.squeeze()
+      X_test = X_test.squeeze()
+      return X_train, X_test, y_train, y_test
+
     else:      
       # text vectorization
       vectorize_layer = tf.keras.layers.TextVectorization(
@@ -205,21 +188,21 @@ def create_text_input(filepath, flag_one_hot_encoding_on, flag_bert_on):
           , output_mode='int'
           , output_sequence_length=sequency_length
       )
-      vectorize_layer.adapt(x_train)      
+      vectorize_layer.adapt(X_train)      
       
-      x_train  = vectorize_layer(x_train)      
-      x_test  = vectorize_layer(x_test)
+      X_train  = vectorize_layer(X_train)      
+      X_test  = vectorize_layer(X_test)
       
       
       # one-hot encode y labels
       y_train = pd.get_dummies(y_train)
       y_test = pd.get_dummies(y_test)
         
-      print("--------------- x_train y_train ----------------")
-      print(x_train)
+      print("--------------- X_train y_train ----------------")
+      print(X_train)
       print(y_train)
       
-      return x_train, x_test, y_train, y_test
+      return X_train, X_test, y_train, y_test
 
 
 # ==================================================================
@@ -250,13 +233,13 @@ def create_image_input(filepath, flag_one_hot_encoding_on):
   images_array = np.stack(images)
   labels_array = np.array(labels)
   
-  # return the raw data for automatic models
+  # return the data converted to array for automatic models
   if flag_one_hot_encoding_on == False:
     return train_test_split(images_array, labels_array, train_size=train_size)
 
   else:
     # split into training and test datasets
-    x_train, x_test, y_train, y_test = train_test_split(images_array, labels_array, train_size=train_size)
+    X_train, X_test, y_train, y_test = train_test_split(images_array, labels_array, train_size=train_size)
     
     # data augmentation
     data_augmentation = keras.Sequential(
@@ -266,10 +249,10 @@ def create_image_input(filepath, flag_one_hot_encoding_on):
     )
     
     # apply data augmentation to the training dataset
-    x_train = data_augmentation(x_train)
+    X_train = data_augmentation(X_train)
     
-    # apply one-hot encoding to target variables
+    # apply one-hot encoding to the target column
     y_train = pd.get_dummies(y_train)
     y_test = pd.get_dummies(y_test)
   
-    return x_train, x_test, y_train, y_test
+    return X_train, X_test, y_train, y_test

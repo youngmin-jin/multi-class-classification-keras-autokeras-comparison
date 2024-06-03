@@ -22,58 +22,40 @@ x_train, x_test, y_train, y_test = create_image_input('fungi',True)
 # -------------------------------
 # Io2
 # -------------------------------
-def Io2_create_model(hp):
-  # image_size = (224,224)
+class Io2_create_model(keras_tuner.HyperModel):
+  def build(self, hp):  
+    # input layer
+    inputs = keras.Input(shape=image_size+(3,)) 
+
+    # hidden layers
+    x = keras.layers.RandomFlip('horizontal')(inputs)
+    x = keras.layers.RandomRotation(0.005)(x)
+    x = keras.layers.RandomContrast(hp.Choice('random_contrast', values=[0.002,0.01]))(x)
+    x = keras.layers.BatchNormalization()(x) 
+    x = keras.layers.Resizing(224,224)(x)   
+    x = keras.applications.EfficientNetB7(
+        input_shape=(224,224,3)
+        , include_top=False
+        , weights='imagenet'
+        , drop_connect_rate=0.005
+        , pooling='avg'
+    )(x)  
+    x = keras.layers.Dropout(0.5)(x)
   
-  # input layer
-  inputs = keras.Input(shape=image_size+(3,)) 
-
-  # hidden layers
-  x = keras.layers.RandomFlip('horizontal')(inputs)
-  x = keras.layers.RandomRotation(hp.Choice("random_rotation", values=[0.005,0.01]))(x)
-  # x = keras.layers.BatchNormalization(momentum=hp.Choice("momentum", values=[0.5,0.99]))(x)
-  x = keras.layers.BatchNormalization()(x)
-  x = keras.layers.Resizing(224,224)(x)
-  x = keras.applications.EfficientNetB7(
-      input_shape=(224,224,3)
-      , include_top=False
-      , weights='imagenet'
-      , drop_connect_rate=hp.Choice("drop_connect_rate", values=[0.005,0.01])
-      # , pooling=hp.Choice("pooling", values=['avg','max'])
-      , pooling='max'
-  )(x)
-  # x = keras.layers.GlobalAveragePooling2D()(x)
-  # x = keras.layers.Dropout(hp.Choice("dropout", values=[0.2,0.5]))(x)
-  x = keras.layers.Dropout(hp.Choice("dropout", values=[0.2,0.5]))(x)
-
-  # output layer
-  outputs = keras.layers.Dense(5, activation='softmax')(x)  
-
-  model = keras.Model(inputs, outputs)
-  model.compile(loss='categorical_crossentropy', optimizer=keras.optimizers.Adam(learning_rate=hp.Choice("learning_rate", values=[5e-5, 3e-5])), metrics=['accuracy'])
-  # model.compile(loss='categorical_crossentropy', optimizer=keras.optimizers.Adam(learning_rate=3e-5), metrics=['accuracy'])
-  return model
-
-
-# def Io2_create_model(hp):
-#   inputs = keras.Input(shape=image_size+(3,)) 
-#   model = keras.applications.EfficientNetB7(include_top=False, input_tensor=inputs, weights="imagenet")
+    # output layer
+    outputs = keras.layers.Dense(5, activation='softmax')(x)  
   
-#   model.trainable = False
-
-#   x = keras.layers.GlobalAveragePooling2D()(model.output)
-#   x = keras.layers.BatchNormalization()(x)
-#   x = keras.layers.Dropout(hp.Choice("dropout", values=[0.2,0.5]))(x)
-#   outputs = keras.layers.Dense(5, activation="softmax")(x)
-  
-#   model = keras.Model(inputs, outputs, name="EfficientNet")
-#   model.compile(loss="categorical_crossentropy", optimizer=keras.optimizers.Adam(learning_rate=hp.Choice("learning_rate", values=[3e-4, 1e-4, 5e-5, 3e-5])), metrics=["accuracy"])
-#   return model
+    model = keras.Model(inputs, outputs)
+    model.compile(loss='categorical_crossentropy', optimizer=keras.optimizers.Adam(learning_rate=3e-5), metrics=['accuracy'])
+    return model
+    
+  def fit(self, hp, model, *args, **kwargs):
+    return model.fit(*args, batch_size=64, **kwargs)
 
 
 # apply grid search
 Io2_model = keras_tuner.GridSearch(
-  Io2_create_model
+  Io2_create_model()
   , objective='accuracy'
   , overwrite=True
 )
@@ -86,13 +68,12 @@ es = keras.callbacks.EarlyStopping(
 )
 
 # search
-num_epochs = 50
+num_epochs = 100
 Io2_model.search(x_train, y_train, epochs=num_epochs, validation_split=0.2, callbacks=[es])
 # Io2_model.search(x_train, y_train, epochs=num_epochs)
 
 # best parameters
-get_best_params(Io2_model, "random_flip", "random_rotation", "drop_connect_rate", "dropout", "learning_rate")
-# get_best_params(Io2_model, "random_flip")
+get_best_params(Io2_model, "random_contrast")
 
 # best model summary 
 Io2_best_model = get_best_model(Io2_model, x_train, y_train)
