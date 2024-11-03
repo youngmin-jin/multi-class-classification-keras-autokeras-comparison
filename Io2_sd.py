@@ -27,10 +27,7 @@ def img_label(example):
   return image, label
 
 ds_train = ds_train.map(img_label)
-ds_train = ds_train.filter(lambda image, label: tf.equal(label, 36) or tf.equal(label, 50) or tf.equal(label, 25)).take(50)
-
 ds_test = ds_test.map(img_label)
-ds_test = ds_test.filter(lambda image, label: tf.equal(label, 36) or tf.equal(label, 45) or tf.equal(label, 25)).take(10)
 
 # preproces
 def preprocessing(image, label):
