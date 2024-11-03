@@ -27,10 +27,7 @@ def img_label(example):
   return image, label
 
 ds_train = ds_train.map(img_label)
-ds_train = ds_train.filter(lambda image, label: tf.equal(label, 36) or tf.equal(label, 50) or tf.equal(label, 25)).take(50)
-
 ds_test = ds_test.map(img_label)
-ds_test = ds_test.filter(lambda image, label: tf.equal(label, 36) or tf.equal(label, 45) or tf.equal(label, 25)).take(10)
 
 # preproces
 def preprocessing(image, label):
@@ -43,8 +40,8 @@ def preprocessing(image, label):
 
   return image, label
 
-ds_train_filtered = ds_train.map(preprocessing).batch(1)
-ds_test_filtered = ds_test.map(preprocessing).batch(1)
+ds_train = ds_train.map(preprocessing).batch(1)
+ds_test = ds_test.map(preprocessing).batch(1)
 
 
 # ------------- model ---------------
@@ -73,7 +70,7 @@ class Io2_create_model(keras_tuner.HyperModel):
     return model
     
   def fit(self, hp, model, *args, **kwargs):
-    return model.fit(*args, batch_size=hp.Choice("batch_size", values=[16,64]), **kwargs)
+    return model.fit(*args, batch_size=hp.Choice("batch_size", values=[16,32]), **kwargs)
 
 # apply grid search
 Io2_model = keras_tuner.GridSearch(
@@ -91,7 +88,7 @@ es = keras.callbacks.EarlyStopping(
 
 # search
 num_epochs = 50
-Io2_model.search(ds_train_filtered, epochs=num_epochs, callbacks=[es])
+Io2_model.search(ds_train, epochs=num_epochs, callbacks=[es])
 
 
 # ------------- get best/ fit ---------------
@@ -99,20 +96,20 @@ Io2_model.search(ds_train_filtered, epochs=num_epochs, callbacks=[es])
 get_best_params(Io2_model, "random_flip", "learning_rate", "batch_size")
 
 # best model summary 
-Io2_best_model = get_best_model(Io2_model, ds_train_filtered)
+Io2_best_model = get_best_model(Io2_model, ds_train)
 
 # fit using the best model
-Io2_best_model.fit(ds_train_filtered)
+Io2_best_model.fit(ds_train)
 
 
 # ------------- results ---------------
 # confusion_matrix, classification report
 y_actual = []
-for image, label in ds_test_filtered:
+for image, label in ds_test:
   y_actual.append(np.argmax(label.numpy()))
 y_actual = np.array(y_actual)
 
-pred = Io2_best_model.predict(ds_test_filtered)
+pred = Io2_best_model.predict(ds_test)
 y_pred = np.argmax(pred, axis=1)
 
 print("---- confusion matrix ----")
